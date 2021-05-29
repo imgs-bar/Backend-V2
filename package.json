@@ -4,12 +4,14 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "@types/minio": "^7.0.7",
     "dotenv": "^10.0.0",
     "fastify": "^3.16.1",
     "fastify-autoload": "^3.7.1",
     "fastify-cors": "^6.0.1",
     "fastify-helmet": "^5.3.1",
     "fastify-multer": "^2.0.2",
+    "minio": "^7.0.18",
     "mongoose": "^5.12.11"
   },
   "devDependencies": {

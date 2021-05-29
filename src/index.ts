@@ -6,6 +6,7 @@ import path = require('path');
 import multer from 'fastify-multer/lib/lib/content-parser';
 import {config} from 'dotenv';
 import {connect} from 'mongoose';
+import {checkBucket} from './utl/MinIO';
 
 config();
 
@@ -53,13 +54,11 @@ server.listen(PORT, (err, address) => {
     return;
   }
   console.log('Server started on ' + address);
-  if (process.env.MONGODB_URL === undefined) {
-    throw new Error('Mongo undefined');
-  }
-  connect(process.env.MONGODB_URL, {
+  connect(process.env.MONGODB_URL!, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   }).then(() => {
     console.log('Connected to MongoDB');
   });
+  checkBucket().then();
 });
