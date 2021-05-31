@@ -6,6 +6,7 @@
   "dependencies": {
     "@types/minio": "^7.0.7",
     "@types/passport-local": "^1.0.33",
+    "@types/uuid": "^8.3.0",
     "argon2": "^0.27.2",
     "dotenv": "^10.0.0",
     "fastify": "^3.16.1",
@@ -17,7 +18,8 @@
     "fastify-secure-session": "^2.3.1",
     "minio": "^7.0.18",
     "mongoose": "^5.12.11",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/node": "^15.6.1",

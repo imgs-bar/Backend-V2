@@ -5,16 +5,28 @@ export interface User extends Document {
   email: string;
   username: string;
   password: string;
-  settings: {
-    embed: boolean;
+  key: string;
+  embed: {
+    enabled: boolean;
+    siteName: string;
+    author: string;
+    title: string;
+    description: string;
   };
 }
 const UserSchema: Schema = new Schema({
-  _id: {type: String, required: true},
-  email: {type: String, required: true},
-  username: {type: String, required: true},
-  password: {type: String, required: true},
-  settings: {type: {embed: Boolean}, required: true},
+  _id: String,
+  email: String,
+  username: String,
+  password: String,
+  key: String,
+  embed: {
+    enabled: Boolean,
+    siteName: String,
+    author: String,
+    title: String,
+    description: String,
+  },
 });
 
 export const User: Model<User> = model('User', UserSchema);
