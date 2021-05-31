@@ -6,6 +6,7 @@
   "dependencies": {
     "@types/minio": "^7.0.7",
     "@types/passport-local": "^1.0.33",
+    "argon2": "^0.27.2",
     "dotenv": "^10.0.0",
     "fastify": "^3.16.1",
     "fastify-autoload": "^3.7.1",
