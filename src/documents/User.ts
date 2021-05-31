@@ -1,6 +1,6 @@
 import {Document, model, Model, Schema} from 'mongoose';
 
-interface User extends Document {
+export interface User extends Document {
   _id: string;
   email: string;
   username: string;
@@ -17,4 +17,4 @@ const UserSchema: Schema = new Schema({
   settings: {type: {embed: Boolean}, required: true},
 });
 
-const User: Model<User> = model('User', UserSchema);
+export const User: Model<User> = model('User', UserSchema);

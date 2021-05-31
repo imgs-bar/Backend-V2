@@ -2,8 +2,8 @@ import {FastifyInstance} from 'fastify';
 import multer from 'fastify-multer';
 import * as crypto from 'crypto';
 import {File} from '../documents/File';
-import {minio} from '../utl/MinIO';
-import {generateRandomString} from '../utl/GenerationUtil';
+import {minio} from '../util/MinIO';
+import {generateRandomString} from '../util/GenerationUtil';
 import {extname} from 'path';
 
 export default async function FileRouter(router: FastifyInstance) {
