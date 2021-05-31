@@ -101,3 +101,5 @@ build
 .tern-port
 
 .env
+
+secret-key

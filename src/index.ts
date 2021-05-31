@@ -9,8 +9,8 @@ import {connect} from 'mongoose';
 import {checkBucket} from './util/MinIO';
 import passport from 'fastify-passport';
 import fastifySecureSesstion from 'fastify-secure-session';
-import {Strategy} from 'passport-local';
-import {User} from './documents/User';
+const fs = require('fs');
+
 import {setupPassport} from './util/SetupPassport';
 config();
 
@@ -40,6 +40,13 @@ if (errors.length > 0)
     `${errors.join(', ')} ${errors.length > 1 ? 'are' : 'is'} required`
   );
 
+server.register(fastifySecureSesstion, {
+  key: fs.readFileSync(path.join(__dirname, '../secret-key')),
+  cookie: {
+    httpOnly: true,
+  },
+});
+
 //Security stuff
 server.register(fastifyHelmet, {
   originAgentCluster: true,
@@ -57,15 +64,10 @@ server.register(fastifyCors, {
 server.register(multer);
 
 //Passport stuff
-server.register(fastifySecureSesstion, {
-  key: process.env.SECRET!,
-  cookie: {
-    httpOnly: true,
-  },
-});
 
 server.register(passport.initialize());
 server.register(passport.secureSession());
+
 setupPassport(passport);
 
 //Load routes from directory

@@ -1,17 +1,14 @@
 import {FastifyInstance} from 'fastify';
-import {registerInterface} from '../interfaces/RegisterInterface';
-import {User} from '../documents/User';
+import {registerInterface} from '../../interfaces/RegisterInterface';
+import {User} from '../../documents/User';
 import {hash} from 'argon2';
 import {v5} from 'uuid';
+import {generateRandomString} from '../../util/GenerationUtil';
 
 export default async function RegisterRouter(router: FastifyInstance) {
   router.post<{Body: registerInterface}>('/', async (request, reply) => {
-    if (
-      !request.body ||
-      !request.body.email ||
-      !request.body.password ||
-      !request.body.username
-    ) {
+    const {email, password, username} = request.body;
+    if (!email || !password || !username) {
       return reply.status(400).send({message: 'Please provide all fields'});
     }
 
@@ -20,7 +17,7 @@ export default async function RegisterRouter(router: FastifyInstance) {
     }
 
     const emailUsed = await User.findOne({
-      email: request.body.email.toLocaleLowerCase(),
+      email: email.toLocaleLowerCase(),
     });
 
     if (emailUsed) {
@@ -28,7 +25,7 @@ export default async function RegisterRouter(router: FastifyInstance) {
     }
 
     const usernameUsed = await User.findOne({
-      username: {$regex: new RegExp(request.body.username, 'i')},
+      username: {$regex: new RegExp(username, 'i')},
     });
 
     if (usernameUsed) {
@@ -40,9 +37,10 @@ export default async function RegisterRouter(router: FastifyInstance) {
       request.body.username,
       '03c35142-1374-47ae-9522-2c54395b57f4'
     );
-    user.email = request.body.email.toLowerCase();
-    user.username = request.body.username;
-    user.password = await hash(request.body.password);
+    user.email = email.toLowerCase();
+    user.username = username;
+    user.password = await hash(password);
+    user.key = generateRandomString(50);
     user.embed = {
       enabled: false,
       author: 'default',
