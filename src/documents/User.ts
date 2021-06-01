@@ -13,6 +13,10 @@ export interface User extends Document {
     title: string;
     description: string;
   };
+  banned: {
+    status: boolean;
+    reason?: string | null;
+  };
 }
 const UserSchema: Schema = new Schema({
   _id: String,
@@ -26,6 +30,13 @@ const UserSchema: Schema = new Schema({
     author: String,
     title: String,
     description: String,
+  },
+  blacklisted: {
+    status: Boolean,
+    reason: {
+      type: String,
+      required: false,
+    },
   },
 });
 

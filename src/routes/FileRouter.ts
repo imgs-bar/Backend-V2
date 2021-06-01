@@ -5,6 +5,7 @@ import {File} from '../documents/File';
 import {minio} from '../util/MinIO';
 import {generateRandomString} from '../util/GenerationUtil';
 import {extname} from 'path';
+import {uploadHandler} from '../handlers/UploadHandler';
 
 export default async function FileRouter(router: FastifyInstance) {
   const upload = multer({
@@ -12,7 +13,7 @@ export default async function FileRouter(router: FastifyInstance) {
   });
   router.post(
     '/sharex',
-    {preHandler: upload.single('file')},
+    {preHandler: [uploadHandler, upload.single('file')]},
     async (request, reply) => {
       if (!request.file || request.file.buffer === undefined) {
         return reply.status(400).send({message: 'You need to provide a file!'});

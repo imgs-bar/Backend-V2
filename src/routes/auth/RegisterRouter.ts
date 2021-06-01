@@ -4,16 +4,29 @@ import {User} from '../../documents/User';
 import {hash} from 'argon2';
 import {v5} from 'uuid';
 import {generateRandomString} from '../../util/GenerationUtil';
+import {validateEmail} from '../../util/ValidationUtil';
 
 export default async function RegisterRouter(router: FastifyInstance) {
   router.post<{Body: registerInterface}>('/', async (request, reply) => {
+    if (request.user) {
+      return reply.status(400).send({message: 'Logged in???'});
+    }
+
     const {email, password, username} = request.body;
     if (!email || !password || !username) {
       return reply.status(400).send({message: 'Please provide all fields'});
     }
+    if (!validateEmail(email)) {
+      return reply.status(400).send({message: 'invalid mail'});
+    }
 
-    if (request.user) {
-      return reply.status(400).send({message: 'Logged in???'});
+    if (password.length < 6) {
+      return reply
+        .status(400)
+        .send({message: 'password at least 6 chars long'});
+    }
+    if (username.length < 3 || username.length > 12) {
+      return reply.status(400).send({message: 'invalid username'});
     }
 
     const emailUsed = await User.findOne({
