@@ -67,7 +67,7 @@ export default async function RegisterRouter(router: FastifyInstance) {
       premium: false,
     };
     await user.save();
-    return reply.status(200).send({message: 'Created account!'});
+    return reply.send({message: 'Created account!'});
   });
 }
 export const autoPrefix = '/register';

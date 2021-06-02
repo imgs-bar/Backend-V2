@@ -6,7 +6,7 @@ export default async function LoginRouter(router: FastifyInstance) {
     '/',
     {preValidation: passport.authenticate('local')},
     async (request, reply) => {
-      return reply.status(200).send({message: 'logged in!'});
+      return reply.send({message: 'logged in!'});
     }
   );
 }
