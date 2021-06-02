@@ -18,7 +18,11 @@ export default async function FileRouter(router: FastifyInstance) {
       if (!request.file || request.file.buffer === undefined) {
         return reply.status(400).send({message: 'You need to provide a file!'});
       }
-      if (request.file.size! > 52_428_800) {
+      if (
+        request.file.size! > 52_428_800 &&
+        !request.user!.roles.premium &&
+        !request.user!.roles.admin
+      ) {
         return reply.status(413).send({message: 'File is too big!'});
       }
       const sha1 = crypto.createHash('sha1');

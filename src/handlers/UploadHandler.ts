@@ -23,5 +23,6 @@ export async function uploadHandler(
       .status(418)
       .send({message: `ur banned, not teapot. reason: ${user.banned.reason}`});
   }
+  request.user = user;
   return done();
 }

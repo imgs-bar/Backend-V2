@@ -8,7 +8,7 @@ export interface User extends Document {
   key: string;
   embed: {
     enabled: boolean;
-    siteName: string;
+    header: string;
     author: string;
     title: string;
     description: string;
@@ -16,6 +16,11 @@ export interface User extends Document {
   banned: {
     status: boolean;
     reason?: string | null;
+  };
+  roles: {
+    premium: boolean;
+    admin: boolean;
+    mod: boolean;
   };
 }
 const UserSchema: Schema = new Schema({
@@ -26,7 +31,7 @@ const UserSchema: Schema = new Schema({
   key: String,
   embed: {
     enabled: Boolean,
-    siteName: String,
+    header: String,
     author: String,
     title: String,
     description: String,
@@ -36,6 +41,11 @@ const UserSchema: Schema = new Schema({
     reason: {
       type: String,
       required: false,
+    },
+    roles: {
+      premium: Boolean,
+      admin: Boolean,
+      mod: Boolean,
     },
   },
 });

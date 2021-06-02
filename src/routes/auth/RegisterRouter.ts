@@ -59,7 +59,12 @@ export default async function RegisterRouter(router: FastifyInstance) {
       author: 'default',
       description: 'default',
       title: 'default',
-      siteName: 'default',
+      header: 'default',
+    };
+    user.roles = {
+      mod: false,
+      admin: false,
+      premium: false,
     };
     await user.save();
     return reply.status(200).send({message: 'Created account!'});
