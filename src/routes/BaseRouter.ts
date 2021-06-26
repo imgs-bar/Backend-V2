@@ -1,5 +1,4 @@
 import {FastifyInstance} from 'fastify';
-import passport from 'fastify-passport';
 
 export default async function BaseRouter(router: FastifyInstance) {
   router.get('/', async (request, reply) => {

@@ -9,14 +9,13 @@ import {connect} from 'mongoose';
 import {checkBucket} from './util/MinIO';
 import passport from 'fastify-passport';
 import fastifySecureSesstion from 'fastify-secure-session';
+import fastifyRateLimit from 'fastify-rate-limit';
+import Redis from 'ioredis';
+
 const fs = require('fs');
 
 import {setupPassport} from './util/SetupPassport';
 config();
-
-const PORT = process.env.PORT || 8080;
-const server = fastify();
-
 const errors = [];
 const requiredVars = [
   'PORT',
@@ -25,7 +24,7 @@ const requiredVars = [
   'MINIO_ACCESS_KEY',
   'MINIO_SECRET_KEY',
   'MINIO_BUCKET',
-  'SECRET',
+  'REDIS_URL',
 ];
 
 for (const env of requiredVars) {
@@ -40,6 +39,28 @@ if (errors.length > 0)
     `${errors.join(', ')} ${errors.length > 1 ? 'are' : 'is'} required`
   );
 
+const PORT = process.env.PORT || 8080;
+
+//Redis for caching, so we can scale
+const redis = new Redis(process.env.REDIS_URL, {
+  connectionName: 'backend',
+  connectTimeout: 500,
+  maxRetriesPerRequest: 1,
+});
+
+const server = fastify({
+  trustProxy: true,
+  logger: true,
+});
+
+//Ratelimit
+server.register(fastifyRateLimit, {
+  timeWindow: 1000,
+  max: 5,
+  redis: redis,
+});
+
+//Secure session for passport
 server.register(fastifySecureSesstion, {
   key: fs.readFileSync(path.join(__dirname, '../secret-key')),
   cookie: {
@@ -48,6 +69,7 @@ server.register(fastifySecureSesstion, {
 });
 
 //Security stuff
+
 server.register(fastifyHelmet, {
   originAgentCluster: true,
   dnsPrefetchControl: true,

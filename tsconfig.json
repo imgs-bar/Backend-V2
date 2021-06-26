@@ -4,10 +4,11 @@
     "rootDir": ".",
     "outDir": "build",
     "typeRoots": ["./typings"],
+    "esModuleInterop": true
   },
   "include": [
     "src/**/*.ts",
     "test/**/*.ts",
-    "typings/**/*.ts",
+    "typings/**/*.ts"
   ]
 }

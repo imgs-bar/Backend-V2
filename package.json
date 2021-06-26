@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "@types/ioredis": "^4.26.4",
     "@types/minio": "^7.0.7",
     "@types/passport-local": "^1.0.33",
     "@types/uuid": "^8.3.0",
@@ -15,7 +16,9 @@
     "fastify-helmet": "^5.3.1",
     "fastify-multer": "^2.0.2",
     "fastify-passport": "^0.4.2",
+    "fastify-rate-limit": "^5.5.0",
     "fastify-secure-session": "^2.3.1",
+    "ioredis": "^4.27.6",
     "minio": "^7.0.18",
     "mongoose": "^5.12.11",
     "passport-local": "^1.0.0",
