@@ -2,7 +2,7 @@ import {FastifyInstance} from 'fastify';
 import {User} from '../../documents/User';
 import {configInterface} from '../../interfaces/ConfigInterface';
 
-export default async function AuthRouter(router: FastifyInstance) {
+export default async function ConfigRouter(router: FastifyInstance) {
   router.post<{Querystring: configInterface}>(
     '/files',
     async (request, reply) => {

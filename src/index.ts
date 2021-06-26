@@ -42,7 +42,7 @@ if (errors.length > 0)
 const PORT = process.env.PORT || 8080;
 
 //Redis for caching, so we can scale
-const redis = new Redis(process.env.REDIS_URL, {
+export const redis = new Redis(process.env.REDIS_URL, {
   connectionName: 'backend',
   connectTimeout: 500,
   maxRetriesPerRequest: 1,
@@ -50,7 +50,6 @@ const redis = new Redis(process.env.REDIS_URL, {
 
 const server = fastify({
   trustProxy: true,
-  logger: true,
 });
 
 //Ratelimit
