@@ -22,6 +22,11 @@ export interface User extends Document {
     admin: boolean;
     mod: boolean;
   };
+  settings: {
+    longUrl: boolean;
+    emojiUrl: boolean;
+    showExtension: boolean;
+  };
 }
 const UserSchema: Schema = new Schema({
   _id: String,
@@ -42,11 +47,16 @@ const UserSchema: Schema = new Schema({
       type: String,
       required: false,
     },
-    roles: {
-      premium: Boolean,
-      admin: Boolean,
-      mod: Boolean,
-    },
+  },
+  roles: {
+    premium: Boolean,
+    admin: Boolean,
+    mod: Boolean,
+  },
+  settings: {
+    longUrl: Boolean,
+    emojiUrl: Boolean,
+    showExtension: Boolean,
   },
 });
 

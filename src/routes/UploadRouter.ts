@@ -3,11 +3,8 @@ import multer from 'fastify-multer';
 import * as crypto from 'crypto';
 import {File} from '../documents/File';
 import {minio} from '../util/MinIO';
-import {generateRandomString} from '../util/GenerationUtil';
-import {extname} from 'path';
+import {generateFileName} from '../util/GenerationUtil';
 import {uploadHandler} from '../handlers/UploadHandler';
-import {configInterface} from '../interfaces/ConfigInterface';
-import {User} from '../documents/User';
 
 export default async function UploadRouter(router: FastifyInstance) {
   const upload = multer({
@@ -30,9 +27,10 @@ export default async function UploadRouter(router: FastifyInstance) {
       const sha1 = crypto.createHash('sha1');
       const hash = sha1.update(request.file.buffer).digest('hex');
       const file = await File.create({
+        fileName: generateFileName(request.user!, request.file.originalname),
+        originalFileName: request.file.originalname,
         hash,
-        fileName:
-          generateRandomString(10) + extname(request.file.originalname!),
+        uploader: request.user!._id,
       });
 
       await minio.putObject(

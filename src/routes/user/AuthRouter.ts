@@ -69,6 +69,11 @@ export default async function AuthRouter(router: FastifyInstance) {
         admin: false,
         premium: false,
       };
+      user.settings = {
+        longUrl: false,
+        emojiUrl: true,
+        showExtension: false,
+      };
       await user.save();
       return reply.send({message: 'Created account!'});
     }
