@@ -2,7 +2,7 @@ import {FastifyInstance} from 'fastify';
 import {Invite} from '../documents/Invite';
 import {generateRandomString} from '../util/GenerationUtil';
 
-export default async function StatsRouter(router: FastifyInstance) {
+export default async function InviteRouter(router: FastifyInstance) {
   router.addHook('preHandler', (request, reply, done) => {
     const {user} = request;
     if (!user) {
@@ -34,4 +34,4 @@ export default async function StatsRouter(router: FastifyInstance) {
     return reply.send({invite: invite._id});
   });
 }
-export const autoPrefix = '/stats';
+export const autoPrefix = '/invites';
