@@ -6,7 +6,7 @@ import {v5} from 'uuid';
 import {generateRandomString} from '../../util/GenerationUtil';
 import {validateEmail} from '../../util/ValidationUtil';
 import passport from 'fastify-passport';
-import {getFromRedis, getNextUid} from '../../util/RedisUtil';
+import {getNextUid} from '../../util/RedisUtil';
 
 export default async function AuthRouter(router: FastifyInstance) {
   router.post<{Body: registerInterface}>(
