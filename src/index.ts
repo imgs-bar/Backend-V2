@@ -10,6 +10,7 @@ import passport from 'fastify-passport';
 import fastifySecureSesstion from 'fastify-secure-session';
 import fastifyRateLimit from 'fastify-rate-limit';
 import Redis from 'ioredis';
+import fastifyHealthcheck from 'fastify-healthcheck';
 import {setupPassport} from './util/SetupPassport';
 import path = require('path');
 
@@ -49,8 +50,17 @@ export const redis = new Redis(process.env.REDIS_URL, {
   maxRetriesPerRequest: 1,
 });
 
+redis.on('connect', () => {
+  console.log('Connected to Redis');
+});
+
 const server = fastify({
   trustProxy: true,
+});
+
+server.register(fastifyCors, {
+  origin: ['https://imgs.bar'],
+  credentials: true,
 });
 
 //Ratelimit
@@ -78,10 +88,7 @@ server.register(fastifyHelmet, {
   hidePoweredBy: true,
 });
 
-server.register(fastifyCors, {
-  origin: ['https://imgs.bar'],
-  credentials: true,
-});
+server.register(fastifyHealthcheck);
 
 //Multer stuff
 server.register(multer);
@@ -99,6 +106,10 @@ server.register(fastifyAutoload, {
   options: {
     prefix: '/v2',
   },
+});
+
+server.setNotFoundHandler(async (request, reply) => {
+  return reply.status(404).send({message: 'Endpoint not found.'});
 });
 
 server.listen(PORT, (err, address) => {

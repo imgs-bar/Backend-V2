@@ -7,30 +7,30 @@ import {generateRandomString} from '../../util/GenerationUtil';
 import {validateEmail} from '../../util/ValidationUtil';
 import passport from 'fastify-passport';
 import {getNextUid} from '../../util/RedisUtil';
+import Filter from 'bad-words';
+
+const filter = new Filter();
 
 export default async function AuthRouter(router: FastifyInstance) {
   router.post<{Body: registerInterface}>(
     '/register',
     async (request, reply) => {
       if (request.user) {
-        return reply.status(400).send({message: 'Logged in???'});
+        return reply.status(400).send({message: 'You are already logged in.'});
       }
 
       const {email, password, username} = request.body;
       if (!email || !password || !username) {
-        return reply.status(400).send({message: 'Please provide all fields'});
+        return reply.status(400).send({message: 'Please provide all fields.'});
       }
-      if (!validateEmail(email)) {
-        return reply.status(400).send({message: 'invalid mail'});
-      }
-
-      if (password.length < 6) {
-        return reply
-          .status(400)
-          .send({message: 'password at least 6 chars long'});
-      }
-      if (username.length < 3 || username.length > 12) {
-        return reply.status(400).send({message: 'invalid username'});
+      if (
+        !validateEmail(email) ||
+        password.length < 6 ||
+        username.length < 3 ||
+        username.length > 12 ||
+        filter.isProfane(username)
+      ) {
+        return reply.status(400).send({message: 'Invalid Parameters.'});
       }
 
       const emailUsed = await User.findOne({
@@ -38,7 +38,7 @@ export default async function AuthRouter(router: FastifyInstance) {
       });
 
       if (emailUsed) {
-        return reply.status(400).send({message: 'Email already in use'});
+        return reply.status(400).send({message: 'Email is already in use.'});
       }
 
       const usernameUsed = await User.findOne({
@@ -46,7 +46,7 @@ export default async function AuthRouter(router: FastifyInstance) {
       });
 
       if (usernameUsed) {
-        return reply.status(400).send({message: 'Username in use!'});
+        return reply.status(400).send({message: 'Username already in use.'});
       }
 
       const user = new User();
@@ -74,10 +74,11 @@ export default async function AuthRouter(router: FastifyInstance) {
     async (request, reply) => {
       const {user} = request;
       if (!user) {
-        return reply.status(401).send({message: 'There is no user wtf'});
+        return reply.status(500).send({message: 'Internal server error.'});
       }
       return reply.send({
         _id: user._id,
+        uid: user.uid,
         username: user.username,
         settings: user.settings,
         roles: user.roles,
@@ -85,5 +86,23 @@ export default async function AuthRouter(router: FastifyInstance) {
       });
     }
   );
+
+  router.get('/', async (request, reply) => {
+    const {user} = request;
+    if (user) {
+      return reply.send({
+        authorized: true,
+        user: {
+          _id: user._id,
+          uid: user.uid,
+          username: user.username,
+          settings: user.settings,
+          roles: user.roles,
+          banned: user.banned,
+        },
+      });
+    }
+    return reply.status(401).send({authorized: false});
+  });
 }
-export const autoPrefix = '/';
+export const autoPrefix = '/auth';

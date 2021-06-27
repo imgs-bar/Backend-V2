@@ -6,6 +6,7 @@ export interface User extends Document {
   email: string;
   username: string;
   password: string;
+  invites: number;
   key: string;
   banned: {
     status: boolean;
@@ -25,11 +26,13 @@ export interface User extends Document {
     showExtension: boolean;
     embeds: {
       enabled: boolean;
-      header: string;
-      author: string;
-      title: string;
-      description: string;
-    }[];
+      list: {
+        header: string;
+        author: string;
+        title: string;
+        description: string;
+      }[];
+    };
   };
 }
 
@@ -39,6 +42,7 @@ const UserSchema: Schema = new Schema({
   email: String,
   username: String,
   password: String,
+  invites: {type: Number, default: 0},
   key: String,
   banned: {
     status: {type: Boolean, default: false},
@@ -66,22 +70,25 @@ const UserSchema: Schema = new Schema({
     emojiUrl: {type: Boolean, default: true},
     showExtension: {type: Boolean, default: false},
     embeds: {
-      type: [
-        {
-          header: String,
-          author: String,
-          title: String,
-          description: String,
-        },
-      ],
-      default: [
-        {
-          header: 'default',
-          author: 'default',
-          title: 'default',
-          description: 'default',
-        },
-      ],
+      enabled: {type: Boolean, default: true},
+      list: {
+        type: [
+          {
+            header: String,
+            author: String,
+            title: String,
+            description: String,
+          },
+        ],
+        default: [
+          {
+            header: 'default',
+            author: 'default',
+            title: 'default',
+            description: 'default',
+          },
+        ],
+      },
     },
   },
 });
