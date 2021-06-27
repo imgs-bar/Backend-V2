@@ -39,7 +39,7 @@ const UserSchema: Schema = new Schema({
   password: String,
   key: String,
   banned: {
-    status: Boolean,
+    status: {type: Boolean, default: false},
     reason: {
       type: String,
       required: false,
@@ -60,18 +60,27 @@ const UserSchema: Schema = new Schema({
     },
   },
   settings: {
-    longUrl: Boolean,
-    emojiUrl: Boolean,
-    showExtension: Boolean,
-    embeds: [
-      {
-        enabled: Boolean,
-        header: String,
-        author: String,
-        title: String,
-        description: String,
-      },
-    ],
+    longUrl: {type: Boolean, default: false},
+    emojiUrl: {type: Boolean, default: true},
+    showExtension: {type: Boolean, default: false},
+    embeds: {
+      type: [
+        {
+          header: String,
+          author: String,
+          title: String,
+          description: String,
+        },
+      ],
+      default: [
+        {
+          header: 'default',
+          author: 'default',
+          title: 'default',
+          description: 'default',
+        },
+      ],
+    },
   },
 });
 

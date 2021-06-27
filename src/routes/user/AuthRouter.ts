@@ -56,24 +56,7 @@ export default async function AuthRouter(router: FastifyInstance) {
       user.email = email.toLowerCase();
       user.username = username;
       user.password = await hash(password);
-      user.key = generateRandomString(50);
-      user.settings = {
-        longUrl: false,
-        emojiUrl: true,
-        showExtension: false,
-        embeds: [
-          {
-            enabled: true,
-            header: 'imgs.bar',
-            author: 'imgs.bar',
-            title: 'imgs.bar',
-            description: 'imgs.bar',
-          },
-        ],
-      };
-      user.banned = {
-        status: false,
-      };
+      user.key = `${username}_${generateRandomString(50)}`;
       await user.save();
       return reply.send({message: 'Created account!'});
     }
