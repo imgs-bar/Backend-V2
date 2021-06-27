@@ -13,6 +13,7 @@ interface File extends Document {
   //UUID of uploader
   uploader: string;
 }
+
 const FileSchema: Schema = new Schema({
   fileName: String,
   originalFileName: String,

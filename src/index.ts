@@ -2,7 +2,6 @@ import fastify from 'fastify';
 import fastifyCors from 'fastify-cors';
 import fastifyHelmet from 'fastify-helmet';
 import fastifyAutoload from 'fastify-autoload';
-import path = require('path');
 import multer from 'fastify-multer/lib/lib/content-parser';
 import {config} from 'dotenv';
 import {connect} from 'mongoose';
@@ -11,10 +10,11 @@ import passport from 'fastify-passport';
 import fastifySecureSesstion from 'fastify-secure-session';
 import fastifyRateLimit from 'fastify-rate-limit';
 import Redis from 'ioredis';
+import {setupPassport} from './util/SetupPassport';
+import path = require('path');
 
 const fs = require('fs');
 
-import {setupPassport} from './util/SetupPassport';
 config();
 const errors = [];
 const requiredVars = [
@@ -44,7 +44,7 @@ const PORT = process.env.PORT || 8080;
 //Redis for caching, so we can scale
 export const redis = new Redis(process.env.REDIS_URL, {
   connectionName: 'backend',
-  connectTimeout: 500,
+  connectTimeout: 0,
   maxRetriesPerRequest: 1,
 });
 
