@@ -6,6 +6,7 @@ import {v5} from 'uuid';
 import {generateRandomString} from '../../util/GenerationUtil';
 import {validateEmail} from '../../util/ValidationUtil';
 import passport from 'fastify-passport';
+import {getFromRedis, getNextUid} from '../../util/RedisUtil';
 
 export default async function AuthRouter(router: FastifyInstance) {
   router.post<{Body: registerInterface}>(
@@ -53,6 +54,7 @@ export default async function AuthRouter(router: FastifyInstance) {
         request.body.username,
         '03c35142-1374-47ae-9522-2c54395b57f4'
       );
+      user.uid = await getNextUid();
       user.email = email.toLowerCase();
       user.username = username;
       user.password = await hash(password);
@@ -64,9 +66,23 @@ export default async function AuthRouter(router: FastifyInstance) {
 
   router.post(
     '/login',
-    {preValidation: passport.authenticate('local')},
+    {
+      preValidation: passport.authenticate('local', {
+        failWithError: true,
+      }),
+    },
     async (request, reply) => {
-      return reply.send({message: 'logged in!'});
+      const {user} = request;
+      if (!user) {
+        return reply.status(401).send({message: 'There is no user wtf'});
+      }
+      return reply.send({
+        _id: user._id,
+        username: user.username,
+        settings: user.settings,
+        roles: user.roles,
+        banned: user.banned,
+      });
     }
   );
 }

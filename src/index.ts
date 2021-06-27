@@ -63,6 +63,7 @@ server.register(fastifyRateLimit, {
 //Secure session for passport
 server.register(fastifySecureSesstion, {
   key: Buffer.from(process.env.COOKIE_SECRET!, 'hex'),
+  cookieName: 'session_id',
   cookie: {
     httpOnly: true,
   },
