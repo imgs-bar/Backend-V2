@@ -8,6 +8,7 @@ import {validateEmail} from '../../util/ValidationUtil';
 import passport from 'fastify-passport';
 import {getNextUid} from '../../util/RedisUtil';
 import Filter from 'bad-words';
+import {Invite} from '../../documents/Invite';
 
 const filter = new Filter();
 
@@ -19,8 +20,8 @@ export default async function AuthRouter(router: FastifyInstance) {
         return reply.status(400).send({message: 'You are already logged in.'});
       }
 
-      const {email, password, username} = request.body;
-      if (!email || !password || !username) {
+      const {email, password, username, invite} = request.body;
+      if (!email || !password || !username || !invite) {
         return reply.status(400).send({message: 'Please provide all fields.'});
       }
       if (
@@ -49,6 +50,12 @@ export default async function AuthRouter(router: FastifyInstance) {
         return reply.status(400).send({message: 'Username already in use.'});
       }
 
+      if (invite !== 'beta') {
+        const inviteFound = await Invite.findById(invite);
+        if (!inviteFound || !inviteFound.usable) {
+          return reply.status(404).send({message: 'Invite not found.'});
+        }
+      }
       const user = new User();
       user._id = v5(
         request.body.username,

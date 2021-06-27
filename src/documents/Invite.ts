@@ -22,10 +22,10 @@ interface Invite extends Document {
 
 const InviteSchema: Schema = new Schema({
   _id: String,
-  usages: Number,
-  usagesLeft: Number,
-  usable: Boolean,
-  expiresAt: Number,
+  usages: {type: Number, default: 0},
+  usagesLeft: {type: Number, default: 1},
+  usable: {type: Boolean, default: true},
+  expiresAt: {type: Number, default: -1},
   createdBy: String,
 });
 
