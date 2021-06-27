@@ -25,6 +25,7 @@ const requiredVars = [
   'MINIO_SECRET_KEY',
   'MINIO_BUCKET',
   'REDIS_URL',
+  'COOKIE_SECRET',
 ];
 
 for (const env of requiredVars) {
@@ -61,7 +62,7 @@ server.register(fastifyRateLimit, {
 
 //Secure session for passport
 server.register(fastifySecureSesstion, {
-  key: fs.readFileSync(path.join(__dirname, '../secret-key')),
+  key: Buffer.from(process.env.COOKIE_SECRET!, 'hex'),
   cookie: {
     httpOnly: true,
   },

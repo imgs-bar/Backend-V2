@@ -102,6 +102,5 @@ build
 
 .env
 
-secret-key
 
 .idea
