@@ -50,12 +50,11 @@ export default async function AuthRouter(router: FastifyInstance) {
         return reply.status(400).send({message: 'Username already in use.'});
       }
 
-      if (invite !== 'beta') {
-        const inviteFound = await Invite.findById(invite);
-        if (!inviteFound || !inviteFound.usable) {
-          return reply.status(404).send({message: 'Invite not found.'});
-        }
+      const inviteFound = await Invite.findById(invite);
+      if (!inviteFound || !inviteFound.usable) {
+        return reply.status(404).send({message: 'Invite not found.'});
       }
+
       const user = new User();
       user._id = v5(
         request.body.username,
@@ -67,6 +66,13 @@ export default async function AuthRouter(router: FastifyInstance) {
       user.password = await hash(password);
       user.key = `${username}_${generateRandomString(50)}`;
       await user.save();
+
+      inviteFound.usable = false;
+      inviteFound.usages = inviteFound.usages + 1;
+      inviteFound.usagesLeft = inviteFound.usagesLeft - 1;
+      inviteFound.usedBy = user._id;
+      await inviteFound.save();
+
       return reply.send({message: 'Created account!'});
     }
   );

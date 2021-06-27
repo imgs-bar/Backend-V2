@@ -18,6 +18,9 @@ interface Invite extends Document {
 
   //UUID Of invite creator.
   createdBy: string;
+
+  //UID of the person that used the code
+  usedBy: string;
 }
 
 const InviteSchema: Schema = new Schema({
