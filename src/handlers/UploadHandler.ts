@@ -3,14 +3,14 @@ import {uploadInterface} from '../interfaces/UploadInterface';
 import {User} from '../documents/User';
 
 export async function uploadHandler(
-  request: FastifyRequest<{Headers: uploadInterface}>,
+  request: FastifyRequest,
   reply: FastifyReply,
   done: HookHandlerDoneFunction
 ) {
   if (!request.headers || !request.headers.key) {
     return reply.status(400).send({message: 'provide an upload key buh'});
   }
-  const {key} = request.headers;
+  const key = request.headers.key as string;
 
   const user = await User.findOne({key});
 
