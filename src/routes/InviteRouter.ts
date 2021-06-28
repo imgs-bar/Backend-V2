@@ -4,10 +4,11 @@ import {generateRandomString} from '../util/GenerationUtil';
 import {authHandler} from '../handlers/AuthHandler';
 
 export default async function InviteRouter(router: FastifyInstance) {
-  router.register(authHandler);
+  router.addHook('preHandler', authHandler);
 
   router.post('/create', async (request, reply) => {
     const {user} = request;
+
     if (!user)
       return reply.status(500).send({message: "This shouldn't happen"});
 

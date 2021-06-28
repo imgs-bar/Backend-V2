@@ -76,6 +76,8 @@ server.register(fastifySecureSesstion, {
   cookieName: 'session_id',
   cookie: {
     httpOnly: true,
+    maxAge: 14 * 24 * 3600000,
+    path: '/',
   },
 });
 
