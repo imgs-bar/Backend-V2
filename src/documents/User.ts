@@ -65,6 +65,9 @@ export interface User extends Document {
 
       //The list of embed "profiles"
       list: {
+        //The name of the embed profile
+        name: string;
+
         //The embed "site url" also known as provider
         header: string;
 
@@ -119,6 +122,7 @@ const UserSchema: Schema = new Schema({
       list: {
         type: [
           {
+            name: String,
             header: String,
             author: String,
             title: String,
@@ -127,6 +131,7 @@ const UserSchema: Schema = new Schema({
         ],
         default: [
           {
+            name: 'Default profile',
             header: 'default',
             author: 'default',
             title: 'default',

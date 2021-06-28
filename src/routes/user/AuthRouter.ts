@@ -9,6 +9,7 @@ import passport from 'fastify-passport';
 import {getNextUid} from '../../util/RedisUtil';
 import Filter from 'bad-words';
 import {Invite} from '../../documents/Invite';
+import {hasTimeExpired} from '../../util/Util';
 
 const filter = new Filter();
 
@@ -51,7 +52,11 @@ export default async function AuthRouter(router: FastifyInstance) {
       }
 
       const inviteFound = await Invite.findById(invite);
-      if (!inviteFound || !inviteFound.usable) {
+      if (
+        !inviteFound ||
+        !inviteFound.usable ||
+        hasTimeExpired(inviteFound.expiresAt)
+      ) {
         return reply.status(404).send({message: 'Invite not found.'});
       }
 
