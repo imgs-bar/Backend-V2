@@ -1,20 +1,10 @@
 import {FastifyInstance} from 'fastify';
 import {Invite} from '../documents/Invite';
 import {generateRandomString} from '../util/GenerationUtil';
+import {authHandler} from '../handlers/AuthHandler';
 
 export default async function InviteRouter(router: FastifyInstance) {
-  router.addHook('preHandler', (request, reply, done) => {
-    const {user} = request;
-    if (!user) {
-      return reply.status(403).send({message: 'Not logged in.'});
-    }
-    if (user.banned.status) {
-      return reply.status(418).send({
-        message: `ur banned, not teapot. reason: ${user.banned.reason}`,
-      });
-    }
-    return done();
-  });
+  router.register(authHandler);
 
   router.post('/create', async (request, reply) => {
     const {user} = request;
