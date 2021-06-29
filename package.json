@@ -24,9 +24,10 @@
   },
   "devDependencies": {
     "@types/bad-words": "^3.0.0",
-    "@types/node": "^15.6.1",
+    "@types/dotenv": "^8.2.0",
     "@types/ioredis": "^4.26.4",
     "@types/minio": "^7.0.7",
+    "@types/node": "^15.6.1",
     "@types/passport-local": "^1.0.33",
     "@types/uuid": "^8.3.0",
     "gts": "^3.1.0",

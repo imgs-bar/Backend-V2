@@ -65,6 +65,10 @@ export interface User extends Document {
 
       //The list of embed "profiles"
       list: {
+
+        //The domain's ID
+        _id: string;
+
         //The name of the embed profile
         name: string;
 
@@ -81,6 +85,24 @@ export interface User extends Document {
         description: string;
       }[];
     };
+
+    //The user's domains
+    domains: {
+        //The domain's domain, i.e imgs.bar
+        name: string;
+
+        //The domains subdomain, i.e beta. Not in use with fake url
+        subDomain: string;
+
+        //The embed author.
+        fake: boolean;
+
+        //The domain's embed _id.
+        embed: string;
+
+        //What should be added to the filename, also supports directories
+        fileNamePrefix: string;
+      }[];
   };
 }
 
@@ -122,6 +144,7 @@ const UserSchema: Schema = new Schema({
       list: {
         type: [
           {
+            _id: String,
             name: String,
             header: String,
             author: String,
@@ -131,6 +154,7 @@ const UserSchema: Schema = new Schema({
         ],
         default: [
           {
+            _id: 'default',
             name: 'Default profile',
             header: 'default',
             author: 'default',
@@ -139,6 +163,26 @@ const UserSchema: Schema = new Schema({
           },
         ],
       },
+    },
+    domains: {
+      type: [
+        {
+          name: String,
+          subDomain: String,
+          fake: Boolean,
+          embed: String,
+          fileNamePrefix: String,
+        },
+      ],
+      default: [
+        {
+          name: 'imgs.bar',
+          subDomain: 'beta',
+          fake: false,
+          embed: 'default',
+          fileNamePrefix: '',
+        },
+      ],
     },
   },
 });
