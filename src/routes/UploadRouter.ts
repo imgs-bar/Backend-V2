@@ -14,24 +14,30 @@ export default async function UploadRouter(router: FastifyInstance) {
     '/sharex',
     {preHandler: [uploadHandler, upload.single('file')]},
     async (request, reply) => {
-      if (!request.file || request.file.buffer === undefined) {
+      const {user} = request;
+      if (!request.file || request.file.buffer === undefined || !user) {
         return reply.status(400).send({message: 'You need to provide a file!'});
       }
       if (
         request.file.size! > 52_428_800 &&
-        !request.user!.roles.premium &&
-        !request.user!.roles.admin
+        user.roles.premium &&
+        user.roles.admin
       ) {
         return reply.status(413).send({message: 'File is too big!'});
       }
       const sha1 = crypto.createHash('sha1');
       const hash = sha1.update(request.file.buffer).digest('hex');
-      const file = await File.create({
-        fileName: generateFileName(request.user!, request.file.originalname),
-        originalFileName: request.file.originalname,
-        hash,
-        uploader: request.user!._id,
-      });
+      const file = new File();
+      file.fileName = generateFileName(user, request.file.originalname);
+      file.originalFileName = request.file.originalname;
+      file.hash = hash;
+      file.uploader = user._id;
+      file.embed =
+        user.settings.embeds.list[
+          Math.floor(Math.random() * user.settings.embeds.list.length)
+        ];
+      file.embed.enabled = user.settings.embeds.enabled;
+      await file.save();
 
       await minio.putObject(
         process.env.MINIO_BUCKET!,
