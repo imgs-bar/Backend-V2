@@ -32,11 +32,13 @@ export default async function UploadRouter(router: FastifyInstance) {
       file.originalFileName = request.file.originalname;
       file.hash = hash;
       file.uploader = user._id;
-      file.embed =
-        user.settings.embeds.list[
+      file.embed = {
+        ...user.settings.embeds.list[
           Math.floor(Math.random() * user.settings.embeds.list.length)
-        ];
-      file.embed.enabled = user.settings.embeds.enabled;
+        ],
+        enabled: user.settings.embeds.enabled,
+      };
+
       await file.save();
 
       await minio.putObject(
