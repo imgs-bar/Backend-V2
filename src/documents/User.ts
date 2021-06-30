@@ -73,10 +73,16 @@ export interface User extends Document {
         name: string;
 
         //The embed "site url" also known as provider
-        header: string;
+        header: {
+          text: string;
+          url: string;
+        };
 
         //The embed author.
-        author: string;
+        author: {
+          text: string;
+          url: string;
+        };
 
         //The embed title
         title: string;
@@ -146,8 +152,14 @@ const UserSchema: Schema = new Schema({
           {
             _id: String,
             name: String,
-            header: String,
-            author: String,
+            header: {
+              text: String,
+              url: String,
+            },
+            author: {
+              text: String,
+              url: String,
+            },
             title: String,
             description: String,
           },
@@ -156,8 +168,14 @@ const UserSchema: Schema = new Schema({
           {
             _id: 'default',
             name: 'Default profile',
-            header: 'default',
-            author: 'default',
+            header: {
+              text: 'default',
+              url: '',
+            },
+            author: {
+              text: 'default',
+              url: '',
+            },
             title: 'default',
             description: 'default',
           },
