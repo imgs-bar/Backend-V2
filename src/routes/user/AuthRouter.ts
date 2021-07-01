@@ -16,23 +16,29 @@ const filter = new Filter();
 export default async function AuthRouter(router: FastifyInstance) {
   router.post<{Body: registerInterface}>(
     '/register',
+    {
+      schema: {
+        body: {
+          type: 'object',
+          required: ['email', 'password', 'username', 'invite'],
+          properties: {
+            email: {type: 'string', format: 'email'},
+            password: {type: 'string', maxLength: 100, minLength: 6},
+            username: {type: 'string', minLength: 3, maxLength: 12},
+            invite: {type: 'string', minLength: 40, maxLength: 40},
+          },
+        },
+      },
+    },
     async (request, reply) => {
       if (request.user) {
         return reply.status(400).send({message: 'You are already logged in.'});
       }
 
       const {email, password, username, invite} = request.body;
-      if (!email || !password || !username || !invite) {
-        return reply.status(400).send({message: 'Please provide all fields.'});
-      }
-      if (
-        !validateEmail(email) ||
-        password.length < 6 ||
-        username.length < 3 ||
-        username.length > 12 ||
-        filter.isProfane(username)
-      ) {
-        return reply.status(400).send({message: 'Invalid Parameters.'});
+
+      if (filter.isProfane(username)) {
+        return reply.status(400).send({message: 'Profane username.'});
       }
 
       const emailUsed = await User.findOne({
@@ -85,8 +91,19 @@ export default async function AuthRouter(router: FastifyInstance) {
   router.post(
     '/login',
     {
+      schema: {
+        body: {
+          type: 'object',
+          required: ['email', 'password', 'username', 'invite'],
+          properties: {
+            username: {type: 'string', minLength: 3},
+            password: {type: 'string', maxLength: 100, minLength: 6},
+          },
+        },
+      },
       preValidation: passport.authenticate('local', {
         failWithError: true,
+        authInfo: false,
       }),
     },
     async (request, reply) => {

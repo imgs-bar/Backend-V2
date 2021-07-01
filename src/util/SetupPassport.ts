@@ -5,8 +5,10 @@ import {verify} from 'argon2';
 
 export function setupPassport(passport: Authenticator) {
   passport.use(
-    new Strategy(async (email, password, done) => {
-      const user = await User.findOne({email});
+    new Strategy(async (username, password, done) => {
+      const user = await User.findOne({
+        $or: [{email: username}, {username}],
+      });
 
       if (!user) return done(null, false);
 
