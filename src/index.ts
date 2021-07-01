@@ -4,7 +4,7 @@ import fastifyHelmet from 'fastify-helmet';
 import fastifyAutoload from 'fastify-autoload';
 import multer from 'fastify-multer/lib/lib/content-parser';
 import {config} from 'dotenv';
-import {connect} from 'mongoose';
+import mongoose from 'mongoose';
 import {checkBucket} from './util/MinIO';
 import passport from 'fastify-passport';
 import fastifySecureSesstion from 'fastify-secure-session';
@@ -120,11 +120,14 @@ server.listen(PORT, (err, address) => {
     return;
   }
   console.log('Server started on ' + address);
-  connect(process.env.MONGODB_URL!, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }).then(() => {
-    console.log('Connected to MongoDB');
-  });
+  mongoose
+    .connect(process.env.MONGODB_URL!, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
+    .then(() => {
+      console.log('Connected to MongoDB');
+    });
   checkBucket().then();
 });
+export {mongoose};
