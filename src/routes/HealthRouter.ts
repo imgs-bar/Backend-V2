@@ -4,19 +4,8 @@ import {formatBytes} from '../util/Util';
 import {mem} from 'systeminformation';
 import * as os from 'os';
 
-export default async function BaseRouter(router: FastifyInstance) {
-  router.get('/logout', async (request, reply) => {
-    const {user} = request;
-
-    if (!user) {
-      return reply.status(401).send({message: 'You are not logged in.'});
-    }
-
-    request.logout();
-    return reply.send({status: 200, message: 'ok done'});
-  });
-
-  router.get('/health', async (request, reply) => {
+export default async function HealthRouter(router: FastifyInstance) {
+  router.get('/', async (request, reply) => {
     const memory = await redis.info('memory');
 
     const memoryUsed = parseInt(
@@ -49,3 +38,4 @@ export default async function BaseRouter(router: FastifyInstance) {
     });
   });
 }
+export const autoPrefix = '/health';

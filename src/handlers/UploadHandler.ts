@@ -1,5 +1,4 @@
 import {FastifyReply, FastifyRequest, HookHandlerDoneFunction} from 'fastify';
-import {uploadInterface} from '../interfaces/UploadInterface';
 import {User} from '../documents/User';
 
 export async function uploadHandler(

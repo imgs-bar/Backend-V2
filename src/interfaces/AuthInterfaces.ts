@@ -1,4 +1,4 @@
-export interface registerInterface {
+export interface authInterfaces {
   username: string;
   email: string;
   password: string;

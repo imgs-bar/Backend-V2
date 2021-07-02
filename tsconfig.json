@@ -1,14 +1,12 @@
 {
   "extends": "./node_modules/gts/tsconfig-google.json",
   "compilerOptions": {
-    "rootDir": ".",
+    "rootDir": "./src",
     "outDir": "build",
     "typeRoots": ["./typings"],
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "lib": [
-      "es2020.bigint"
-    ]
+    "pretty": true,
   },
   "include": [
     "src/**/*.ts",

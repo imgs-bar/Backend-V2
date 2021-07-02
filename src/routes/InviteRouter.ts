@@ -22,6 +22,11 @@ export default async function InviteRouter(router: FastifyInstance) {
     invite._id = await generateRandomString(40);
     invite.createdBy = user._id;
     await invite.save();
+
+    if (!user.roles.admin) {
+      user.invites = user.invites - 1;
+    }
+    await user.save();
     return reply.send({invite: invite._id});
   });
 }

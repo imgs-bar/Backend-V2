@@ -1,5 +1,5 @@
 import {FastifyInstance} from 'fastify';
-import {registerInterface} from '../../interfaces/RegisterInterface';
+import {authInterfaces} from '../../interfaces/AuthInterfaces';
 import {User} from '../../documents/User';
 import {hash} from 'argon2';
 import {v5} from 'uuid';
@@ -14,7 +14,7 @@ import {hasTimeExpired} from '../../util/Util';
 const filter = new Filter();
 
 export default async function AuthRouter(router: FastifyInstance) {
-  router.post<{Body: registerInterface}>(
+  router.post<{Body: authInterfaces}>(
     '/register',
     {
       schema: {
@@ -78,6 +78,12 @@ export default async function AuthRouter(router: FastifyInstance) {
       user.key = `${username}_${generateRandomString(50)}`;
       await user.save();
 
+      await User.findByIdAndUpdate(inviteFound.createdBy, {
+        $inc: {
+          invited: 1,
+        },
+      });
+
       inviteFound.usable = false;
       inviteFound.usages = inviteFound.usages + 1;
       inviteFound.usagesLeft = inviteFound.usagesLeft - 1;
@@ -138,6 +144,17 @@ export default async function AuthRouter(router: FastifyInstance) {
       });
     }
     return reply.status(401).send({authorized: false});
+  });
+
+  router.get('/logout', async (request, reply) => {
+    const {user} = request;
+
+    if (!user) {
+      return reply.status(401).send({message: 'You are not logged in.'});
+    }
+
+    request.logout();
+    return reply.send({message: 'Logged you out.'});
   });
 }
 export const autoPrefix = '/auth';

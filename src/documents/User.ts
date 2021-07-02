@@ -22,6 +22,12 @@ export interface User extends Document {
   //The user's upload key
   key: string;
 
+  //The amount of uploads the user has
+  uploads: number;
+
+  //The amount of people this user has invited
+  invited: number;
+
   //The user's banned status.
   banned: {
     //If they're banned
@@ -122,6 +128,8 @@ const UserSchema: Schema = new Schema({
   password: String,
   invites: {type: Number, default: 0},
   key: String,
+  uploads: {type: Number, default: 0},
+  invited: {type: Number, default: 0},
   banned: {
     status: {type: Boolean, default: false},
     reason: {

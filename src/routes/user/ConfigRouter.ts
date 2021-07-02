@@ -1,9 +1,9 @@
 import {FastifyInstance} from 'fastify';
 import {User} from '../../documents/User';
-import {configInterface} from '../../interfaces/ConfigInterface';
+import {configInterfaces} from '../../interfaces/ConfigInterfaces';
 
 export default async function ConfigRouter(router: FastifyInstance) {
-  router.post<{Querystring: configInterface}>(
+  router.post<{Querystring: configInterfaces}>(
     '/files',
     async (request, reply) => {
       const {key} = request.query;
