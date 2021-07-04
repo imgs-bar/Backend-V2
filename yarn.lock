@@ -145,13 +145,6 @@
   dependencies:
     "@types/node" "*"
 
-"@types/dotenv@^8.2.0":
-  version "8.2.0"
-  resolved "https://registry.yarnpkg.com/@types/dotenv/-/dotenv-8.2.0.tgz#5cd64710c3c98e82d9d15844375a33bf1b45d053"
-  integrity sha512-ylSC9GhfRH7m1EUXBXofhgx4lUWmFeQDINW5oLuS+gxWdfUeW4zJdeVTYVkexEW+e2VUvlZR2kGnGGipAWR7kw==
-  dependencies:
-    dotenv "*"
-
 "@types/express-serve-static-core@^4.17.18":
   version "4.17.20"
   resolved "https://registry.yarnpkg.com/@types/express-serve-static-core/-/express-serve-static-core-4.17.20.tgz#44caee029f2c26c46711da5e845cdc12167ad72d"
@@ -208,7 +201,7 @@
     "@types/bson" "*"
     "@types/node" "*"
 
-"@types/node@*", "@types/node@^15.6.1":
+"@types/node@*":
   version "15.6.1"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-15.6.1.tgz#32d43390d5c62c5b6ec486a9bc9c59544de39a08"
   integrity sha512-7EIraBEyRHEe7CH+Fm1XvgqU6uwZN8Q7jppJGcqjROMT29qhAuuOxYB1uEY5UMYQKEmA5D+5tBnhdaPXSsLONA==
@@ -878,7 +871,7 @@ dot-prop@^5.2.0:
   dependencies:
     is-obj "^2.0.0"
 
-dotenv@*, dotenv@^10.0.0:
+dotenv@^10.0.0:
   version "10.0.0"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-10.0.0.tgz#3d4227b8fb95f81096cdd2b66653fb2c7085ba81"
   integrity sha512-rlBi9d8jpv9Sf1klPjNfFAuWDjKLwTIJJ/VxtoTwIR6hnZxcEOQCZg2oIL3MWBYw5GpUDKOEnND7LXTbIpQ03Q==
@@ -1221,13 +1214,6 @@ fastify-flash@^2.0.2:
   integrity sha512-5TO4h20V4EOqGSuO48R8cqDoyPyju3MHLYhhIfGfV5YfMnOGVZyVZbAxmsJVaB2Khd/be38vbRWluwbrUO7Qtg==
   dependencies:
     fastify-plugin "~2.0.0"
-
-fastify-healthcheck@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/fastify-healthcheck/-/fastify-healthcheck-3.1.0.tgz#ea104bbd28a1250a1be8c7466331f17927d20f15"
-  integrity sha512-G8G+RHYQh4JP3qv/OaFlGgFvZfExL3+khdoRfTwaRCsipprk4qXrsoI25O11k1bIyihZgeyG7LIbt0PdHjJUMw==
-  dependencies:
-    under-pressure "^5.6.0"
 
 fastify-helmet@^5.3.1:
   version "5.3.1"
@@ -3171,14 +3157,6 @@ typescript@^4.2.4:
   version "4.2.4"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.2.4.tgz#8610b59747de028fda898a8aef0e103f156d0961"
   integrity sha512-V+evlYHZnQkaz8TRBuxTA92yZBPotr5H+WhQ7bD3hZUndx5tGOa1fuCgeSjxAzM1RiN5IzvadIXTVefuuwZCRg==
-
-under-pressure@^5.6.0:
-  version "5.7.0"
-  resolved "https://registry.yarnpkg.com/under-pressure/-/under-pressure-5.7.0.tgz#d4a1909dc649ffba74664d97ac3984e6ff6dd3ba"
-  integrity sha512-tR5fyBSB+4FqW5BzDXfLd9S7XbOV1ukRf0sOPu1ClJLKqjvqyF6LEEyaBkA8lMKyuLe2Pz72OHxV5zYGyd7N+w==
-  dependencies:
-    fastify-error "^0.3.0"
-    fastify-plugin "^3.0.0"
 
 unique-string@^2.0.0:
   version "2.0.0"

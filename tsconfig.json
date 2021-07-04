@@ -3,14 +3,18 @@
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "build",
-    "typeRoots": ["./typings"],
+    "typeRoots": ["./typings", "./node_modules/@types"],
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "pretty": true,
+    "skipLibCheck": true
   },
   "include": [
     "src/**/*.ts",
     "test/**/*.ts",
     "typings/**/*.ts"
-  ]
+  ],
+"exclude": [
+  "node_modules"
+]
 }

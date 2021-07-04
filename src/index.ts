@@ -10,11 +10,8 @@ import passport from 'fastify-passport';
 import fastifySecureSesstion from 'fastify-secure-session';
 import fastifyRateLimit from 'fastify-rate-limit';
 import Redis from 'ioredis';
-import fastifyHealthcheck from 'fastify-healthcheck';
 import {setupPassport} from './util/SetupPassport';
 import path = require('path');
-
-const fs = require('fs');
 
 config();
 const errors = [];
@@ -90,8 +87,6 @@ server.register(fastifyHelmet, {
   hidePoweredBy: true,
 });
 
-server.register(fastifyHealthcheck);
-
 //Multer stuff
 server.register(multer);
 
@@ -114,7 +109,7 @@ server.setNotFoundHandler(async (request, reply) => {
   return reply.status(404).send({message: 'Endpoint not found.'});
 });
 
-server.listen(PORT, (err, address) => {
+server.listen(PORT, '0.0.0.0', (err, address) => {
   if (err) {
     console.log(err);
     return;

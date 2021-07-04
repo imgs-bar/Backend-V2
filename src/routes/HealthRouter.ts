@@ -16,6 +16,7 @@ export default async function HealthRouter(router: FastifyInstance) {
     mongoose.connection.db.stats(async (error, result) => {
       reply.send({
         message: 'Is the backend up?',
+        uptime: process.uptime(),
         redis: {
           status: redis.status,
           memoryUsed: formatBytes(memoryUsed),
