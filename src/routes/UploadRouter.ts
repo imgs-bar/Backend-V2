@@ -10,6 +10,7 @@ export default async function UploadRouter(router: FastifyInstance) {
   const upload = multer({
     storage: multer.memoryStorage(),
   });
+
   router.post(
     '/sharex',
     {preHandler: [uploadHandler, upload.single('file')]},

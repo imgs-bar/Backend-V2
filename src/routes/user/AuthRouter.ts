@@ -4,7 +4,6 @@ import {User} from '../../documents/User';
 import {hash} from 'argon2';
 import {v5} from 'uuid';
 import {generateRandomString} from '../../util/GenerationUtil';
-import {validateEmail} from '../../util/ValidationUtil';
 import passport from 'fastify-passport';
 import {getNextUid} from '../../util/RedisUtil';
 import Filter from 'bad-words';
@@ -100,7 +99,7 @@ export default async function AuthRouter(router: FastifyInstance) {
       schema: {
         body: {
           type: 'object',
-          required: ['email', 'password', 'username', 'invite'],
+          required: ['username', 'password'],
           properties: {
             username: {type: 'string', minLength: 3},
             password: {type: 'string', maxLength: 100, minLength: 6},
@@ -117,14 +116,7 @@ export default async function AuthRouter(router: FastifyInstance) {
       if (!user) {
         return reply.status(500).send({message: 'Internal server error.'});
       }
-      return reply.send({
-        _id: user._id,
-        uid: user.uid,
-        username: user.username,
-        settings: user.settings,
-        roles: user.roles,
-        banned: user.banned,
-      });
+      return reply.send(user);
     }
   );
 
@@ -133,14 +125,7 @@ export default async function AuthRouter(router: FastifyInstance) {
     if (user) {
       return reply.send({
         authorized: true,
-        user: {
-          _id: user._id,
-          uid: user.uid,
-          username: user.username,
-          settings: user.settings,
-          roles: user.roles,
-          banned: user.banned,
-        },
+        user,
       });
     }
     return reply.status(401).send({authorized: false});

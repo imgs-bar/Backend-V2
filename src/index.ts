@@ -56,7 +56,7 @@ const server = fastify({
 });
 
 server.register(fastifyCors, {
-  origin: ['https://imgs.bar'],
+  origin: ['https://imgs.bar', 'http://localhost:3000'],
   credentials: true,
 });
 
@@ -64,7 +64,7 @@ server.register(fastifyCors, {
 server.register(fastifyRateLimit, {
   timeWindow: 1000,
   max: 5,
-  redis: redis,
+  redis,
 });
 
 //Secure session for passport
@@ -79,7 +79,6 @@ server.register(fastifySecureSesstion, {
 });
 
 //Security stuff
-
 server.register(fastifyHelmet, {
   originAgentCluster: true,
   dnsPrefetchControl: true,
