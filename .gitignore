@@ -100,7 +100,4 @@ build
 # TernJS port file
 .tern-port
 
-.env
-
-
 .idea
