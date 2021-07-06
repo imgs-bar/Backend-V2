@@ -56,7 +56,7 @@ const server = fastify({
 });
 
 server.register(fastifyCors, {
-  origin: ['https://imgs.bar', 'http://localhost:3000'],
+  origin: ['https://imgs.bar', 'http://localhost:3000', 'https://beta.imgs.bar'],
   credentials: true,
 });
 
