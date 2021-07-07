@@ -16,13 +16,13 @@ export default async function HealthRouter(router: FastifyInstance) {
     mongoose.connection.db.stats(async (error, result) => {
       reply.send({
         message: 'Is the backend up?',
-        uptime: process.uptime(),
+        uptime: Math.floor(process.uptime()),
         redis: {
           status: redis.status,
           memoryUsed: formatBytes(memoryUsed),
         },
         mongo: {
-          status: result.ok === 1 ? 'Connected' : 'Error',
+          status: result.ok === 1 ? 'connected' : 'error',
           database: result.db,
           collections: result.collections,
           objects: result.objects,
@@ -33,7 +33,6 @@ export default async function HealthRouter(router: FastifyInstance) {
           hostName: os.hostname(),
           cpus: os.cpus().length,
           memoryTotal: formatBytes(memoryMachine.total),
-          memoryUsed: formatBytes(memoryMachine.used),
         },
       });
     });
