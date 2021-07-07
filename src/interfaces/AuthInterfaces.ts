@@ -4,3 +4,7 @@ export interface authInterfaces {
   password: string;
   invite: string;
 }
+
+export interface loginInterface {
+  rememberMe: boolean;
+}

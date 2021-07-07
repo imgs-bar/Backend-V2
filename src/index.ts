@@ -40,6 +40,10 @@ if (errors.length > 0)
 
 const PORT = process.env.PORT || 8080;
 
+const server = fastify({
+  trustProxy: true,
+});
+
 //Redis for caching, so we can scale
 export const redis = new Redis(process.env.REDIS_URL, {
   connectionName: 'backend',
@@ -49,10 +53,6 @@ export const redis = new Redis(process.env.REDIS_URL, {
 
 redis.on('connect', () => {
   console.log('Connected to Redis');
-});
-
-const server = fastify({
-  trustProxy: true,
 });
 
 server.register(fastifyCors, {
@@ -78,7 +78,6 @@ server.register(fastifySecureSesstion, {
   cookieName: 'session_id',
   cookie: {
     httpOnly: true,
-    maxAge: 14 * 24 * 3600000,
     path: '/',
   },
 });
@@ -89,6 +88,16 @@ server.register(fastifyHelmet, {
   dnsPrefetchControl: true,
   permittedCrossDomainPolicies: true,
   hidePoweredBy: true,
+});
+
+//Disable cache
+server.addHook('onRequest', async (req, reply) => {
+  reply.headers({
+    'Surrogate-Control': 'no-store',
+    'Cache-Control': 'no-store, max-age=0, must-revalidate',
+    Pragma: 'no-cache',
+    Expires: '0',
+  });
 });
 
 //Multer stuff

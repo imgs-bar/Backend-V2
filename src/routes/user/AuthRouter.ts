@@ -1,3 +1,4 @@
+import {loginInterface} from './../../interfaces/AuthInterfaces';
 import {FastifyInstance} from 'fastify';
 import {authInterfaces} from '../../interfaces/AuthInterfaces';
 import {User} from '../../documents/User';
@@ -93,16 +94,17 @@ export default async function AuthRouter(router: FastifyInstance) {
     }
   );
 
-  router.post(
+  router.post<{Body: loginInterface}>(
     '/login',
     {
       schema: {
         body: {
           type: 'object',
-          required: ['username', 'password'],
+          required: ['username', 'password', 'rememberMe'],
           properties: {
             username: {type: 'string', minLength: 3},
             password: {type: 'string', maxLength: 100, minLength: 6},
+            rememberMe: {type: 'boolean'},
           },
         },
       },
@@ -113,8 +115,22 @@ export default async function AuthRouter(router: FastifyInstance) {
     },
     async (request, reply) => {
       const {user} = request;
+      const {rememberMe} = request.body;
+
       if (!user) {
         return reply.status(500).send({message: 'Internal server error.'});
+      }
+
+      if (user.banned.status) {
+        return reply.status(403).send({
+          message: `You are banned: ${
+            user.banned.reason ? user.banned.reason : 'No reason'
+          }`,
+        });
+      }
+
+      if (rememberMe) {
+        request.session.options({maxAge: 4 * 7 * 24 * 60 * 60});
       }
       return reply.send(user);
     }
@@ -123,6 +139,13 @@ export default async function AuthRouter(router: FastifyInstance) {
   router.get('/', async (request, reply) => {
     const {user} = request;
     if (user) {
+      if (user.banned.status) {
+        return reply.status(403).send({
+          message: `You are banned: ${
+            user.banned.reason ? user.banned.reason : 'No reason'
+          }`,
+        });
+      }
       return reply.send({
         authorized: true,
         user,
