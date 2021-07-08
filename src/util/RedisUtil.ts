@@ -5,7 +5,7 @@ const getAsync = promisify(redis.get).bind(redis);
 
 export async function getFromRedis(
   name: string,
-  defaultValue = 1
+  defaultValue: any = 1
 ): Promise<any> {
   const val = await getAsync(name);
   if (!val) {

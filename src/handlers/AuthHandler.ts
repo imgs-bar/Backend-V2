@@ -6,12 +6,12 @@ export async function authHandler(
 ) {
   const {user} = request;
   if (!user) {
-    return reply.status(403).send({message: 'Not logged in.'});
+    return reply.status(401).send({message: 'Not logged in.'});
   }
 
   if (user.banned.status) {
-    return reply.status(418).send({
-      message: `ur banned, not teapot. reason: ${user.banned.reason}`,
+    return reply.status(403).send({
+      message: `You are banned with the reason: ${user.banned.reason}`,
     });
   }
 
