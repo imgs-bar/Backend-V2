@@ -136,14 +136,13 @@ server.listen(PORT, '0.0.0.0', (err, address) => {
     })
     .then(() => {
       console.log('Connected to MongoDB');
+      (async () => {
+        checkPremium();
+        setInterval(checkPremium, 1 * 60 * 1000);
+      })();
+
+      checkBucket().then().catch();
     });
 });
-
-async () => {
-  await checkBucket();
-
-  setInterval(checkPremium, 30 * 60 * 1000);
-  checkPremium();
-};
 
 export {mongoose};

@@ -2,50 +2,61 @@ import {Document, model, Model, Schema} from 'mongoose';
 
 interface File extends Document {
   /**
-   * name of File
-   *
+   * Name of File
    */
   fileName: string;
 
   /**
-   * original file name.
+   * Original file name.
    *
    */
   originalFileName: string;
 
-  //Hash of file
+  /**
+   * Hash of the file
+   */
   hash: string;
 
   /**
    * Size of file in bytes
-   *
    */
   size: number;
 
   /**
    * UUID of file uploader
-   *
    */
   uploader: string;
 
-  //The files embed, won't update.
+  /**
+   * The files embed settings
+   */
   embed: {
-    //The domain's ID
+    /**
+     * The embed's id
+     */
     _id: string;
 
-    //If the image should embed
+    /**
+     * Should the file embed?
+     */
     enabled: boolean;
 
-    //The name of the embed profile
+    /**
+     * The name of the embed profile
+     */
     name: string;
 
-    //The embed "site url" also known as provider
+    /**
+     * SiteURL, also known as header
+     */
     header: {
       text: string;
       url: string;
     };
 
-    //The embed author.
+    /**
+     *
+     */
     author: {
       text: string;
       url: string;

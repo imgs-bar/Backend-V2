@@ -30,4 +30,16 @@ export default async function InviteRouter(router: FastifyInstance) {
     return reply.send({invite: invite._id});
   });
 }
+
+export async function checkInvites() {
+  const invites = await Invite.find({
+    expiresAt: {$ne: -1},
+  });
+
+  for (const invite of invites) {
+    if (invite.expiresAt > new Date().getTime()) {
+      await invite.delete();
+    }
+  }
+}
 export const autoPrefix = '/invites';

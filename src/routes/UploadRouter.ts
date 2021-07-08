@@ -28,11 +28,17 @@ export default async function UploadRouter(router: FastifyInstance) {
       }
       const sha1 = crypto.createHash('sha1');
       const hash = sha1.update(request.file.buffer).digest('hex');
+
       const file = new File();
+
       file.fileName = generateFileName(user, request.file.originalname);
       file.originalFileName = request.file.originalname;
+
       file.hash = hash;
+      file.size = request.file.size!;
+
       file.uploader = user._id;
+
       file.embed = {
         ...user.settings.embeds.list[
           Math.floor(Math.random() * user.settings.embeds.list.length)
