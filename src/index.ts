@@ -12,6 +12,7 @@ import fastifyRateLimit from 'fastify-rate-limit';
 import Redis from 'ioredis';
 import {setupPassport} from './util/SetupPassport';
 import path = require('path');
+import {checkPremium} from './routes/PremiumRouter';
 
 config();
 const errors = [];
@@ -136,6 +137,13 @@ server.listen(PORT, '0.0.0.0', (err, address) => {
     .then(() => {
       console.log('Connected to MongoDB');
     });
-  checkBucket().then();
 });
+
+async () => {
+  await checkBucket();
+
+  setInterval(checkPremium, 30 * 60 * 1000);
+  checkPremium();
+};
+
 export {mongoose};

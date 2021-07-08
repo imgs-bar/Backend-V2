@@ -7,6 +7,9 @@ export interface User extends Document {
   //The users UID
   uid: number;
 
+  //The users original UID
+  originalUid: number;
+
   //The user's email
   email: string;
 
@@ -35,6 +38,12 @@ export interface User extends Document {
 
     //The reason they are banned
     reason?: string | null;
+  };
+
+  //The user's cooldowns
+  cooldowns: {
+    //Last uid change.
+    lastUidChange: Date;
   };
 
   //The user's roles
@@ -123,6 +132,7 @@ export interface User extends Document {
 const UserSchema: Schema = new Schema({
   _id: String,
   uid: Number,
+  originalUid: Number,
   email: String,
   username: String,
   password: String,
@@ -136,6 +146,9 @@ const UserSchema: Schema = new Schema({
       type: String,
       required: false,
     },
+  },
+  cooldowns: {
+    lastUidChange: {type: Date, default: null},
   },
   roles: {
     premium: {

@@ -72,6 +72,7 @@ export default async function AuthRouter(router: FastifyInstance) {
         '03c35142-1374-47ae-9522-2c54395b57f4'
       );
       user.uid = await getNextUid();
+      user.originalUid = user.uid;
       user.email = email.toLowerCase();
       user.username = username;
       user.password = await hash(password);
@@ -84,9 +85,9 @@ export default async function AuthRouter(router: FastifyInstance) {
         },
       });
 
-      inviteFound.usable = false;
       inviteFound.usages = inviteFound.usages + 1;
       inviteFound.usagesLeft = inviteFound.usagesLeft - 1;
+      inviteFound.usable = inviteFound.usagesLeft > 1;
       inviteFound.usedBy = user._id;
       await inviteFound.save();
 

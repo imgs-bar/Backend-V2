@@ -1,16 +1,31 @@
 import {Document, model, Model, Schema} from 'mongoose';
 
 interface File extends Document {
-  //The filename stored.
+  /**
+   * name of File
+   *
+   */
   fileName: string;
 
-  //The filename stored.
+  /**
+   * original file name.
+   *
+   */
   originalFileName: string;
 
   //Hash of file
   hash: string;
 
-  //UUID of uploader
+  /**
+   * Size of file in bytes
+   *
+   */
+  size: number;
+
+  /**
+   * UUID of file uploader
+   *
+   */
   uploader: string;
 
   //The files embed, won't update.
@@ -52,6 +67,7 @@ const FileSchema: Schema = new Schema({
   originalFileName: String,
   hash: String,
   uploader: String,
+  size: Number,
   embed: {
     _id: String,
     enabled: Boolean,
