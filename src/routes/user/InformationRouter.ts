@@ -10,8 +10,8 @@ const filter = new Filter();
 
 export default async function AuthRouter(router: FastifyInstance) {
   router.get('/motd', {preHandler: authHandler}, async (req, reply) => {
-    const motd = getFromRedis('motd', 'Message of the day');
-    reply.send({motd: motd});
+    const motd = await getFromRedis('motd', 'Message of the day');
+    reply.send({motd});
   });
 
   router.patch<{Body: setMotdInterface; Headers: botInterface}>(

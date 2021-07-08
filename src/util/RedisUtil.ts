@@ -5,13 +5,15 @@ const getAsync = promisify(redis.get).bind(redis);
 
 export async function getFromRedis(
   name: string,
-  defaultValue: any = 1
+  defaultValue: any
 ): Promise<any> {
   const val = await getAsync(name);
+
   if (!val) {
     await setInRedis(name, defaultValue);
     return defaultValue;
   }
+
   return val;
 }
 
