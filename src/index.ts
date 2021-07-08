@@ -13,6 +13,7 @@ import Redis from 'ioredis';
 import {setupPassport} from './util/SetupPassport';
 import path = require('path');
 import {checkPremium} from './routes/PremiumRouter';
+import {checkInvites} from './routes/InviteRouter';
 
 config();
 const errors = [];
@@ -138,7 +139,10 @@ server.listen(PORT, '0.0.0.0', (err, address) => {
       console.log('Connected to MongoDB');
       (async () => {
         checkPremium();
-        setInterval(checkPremium, 1 * 60 * 1000);
+        setInterval(checkPremium, 10 * 60 * 1000);
+
+        checkInvites();
+        setInterval(checkInvites, 60 * 60 * 1000);
       })();
 
       checkBucket().then().catch();
