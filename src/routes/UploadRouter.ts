@@ -17,7 +17,17 @@ export default async function UploadRouter(router: FastifyInstance) {
     {preHandler: [uploadHandler, upload.single('file')]},
     async (request, reply) => {
       const {user} = request;
-      if (!request.file || request.file.buffer === undefined || !user) {
+
+      if (!user) {
+        return reply.status(403).send({
+          message: 'Unauthorized',
+        });
+      }
+      if (
+        !request.file ||
+        request.file.buffer === undefined ||
+        request.file.buffer.length === 0
+      ) {
         return reply.status(400).send({message: 'You need to provide a file!'});
       }
       if (
