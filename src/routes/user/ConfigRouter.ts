@@ -3,7 +3,7 @@ import {User} from '../../documents/User';
 import {configInterfaces} from '../../interfaces/ConfigInterfaces';
 
 export default async function ConfigRouter(router: FastifyInstance) {
-  router.post<{Querystring: configInterfaces}>(
+  router.get<{Querystring: configInterfaces}>(
     '/files',
     async (request, reply) => {
       const {key} = request.query;
@@ -20,7 +20,7 @@ export default async function ConfigRouter(router: FastifyInstance) {
         Name: `${user.username} on imgs.bar.sxcu`,
         DestinationType: 'ImageUploader, FileUploader',
         RequestType: 'POST',
-        RequestURL: 'https://beta.imgs.bar/upload/sharex',
+        RequestURL: 'https://betaapi.imgs.bar/upload/sharex',
         FileFormName: 'file',
         Body: 'MultipartFormData',
         Headers: {
