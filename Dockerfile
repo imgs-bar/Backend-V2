@@ -6,7 +6,6 @@ RUN yarn install
 
 COPY tsconfig.json ./
 
-COPY .env /app
 COPY typings /app/typings
 COPY src /app/src
 
