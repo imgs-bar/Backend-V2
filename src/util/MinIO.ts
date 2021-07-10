@@ -1,18 +1,17 @@
 import {Client} from 'minio';
-import {config} from 'dotenv';
+import config from '../config/config.json';
 
-config();
 export const minio = new Client({
-  endPoint: process.env.MINIO_ENDPOINT!,
-  accessKey: process.env.MINIO_ACCESS_KEY!,
-  secretKey: process.env.MINIO_SECRET_KEY!,
+  endPoint: config.minio.endpoint,
+  accessKey: config.minio.accessKey,
+  secretKey: config.minio.secretKey,
   useSSL: false,
-  port: 9000,
+  port: config.minio.port,
 });
 
 export async function checkBucket() {
-  if (!(await minio.bucketExists(process.env.MINIO_BUCKET!))) {
-    minio.makeBucket(process.env.MINIO_BUCKET!, 'eu-central-1', () => {
+  if (!(await minio.bucketExists(config.minio.bucket))) {
+    minio.makeBucket(config.minio.bucket, 'eu-central-1', () => {
       console.log('Created MinIO Bucket.');
     });
   }

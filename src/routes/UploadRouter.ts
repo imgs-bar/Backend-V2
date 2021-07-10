@@ -1,3 +1,4 @@
+import config from '../config/config.json';
 import {FastifyInstance} from 'fastify';
 import multer from 'fastify-multer';
 import * as crypto from 'crypto';
@@ -49,7 +50,7 @@ export default async function UploadRouter(router: FastifyInstance) {
       await file.save();
 
       await minio.putObject(
-        process.env.MINIO_BUCKET!,
+        config.minio.bucket,
         file.fileName,
         request.file.buffer
       );

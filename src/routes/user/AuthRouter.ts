@@ -1,17 +1,23 @@
-import {loginInterface} from './../../interfaces/AuthInterfaces';
-import {FastifyInstance} from 'fastify';
-import {authInterfaces} from '../../interfaces/AuthInterfaces';
-import {User} from '../../documents/User';
 import {hash} from 'argon2';
-import {v5} from 'uuid';
-import {generateRandomString} from '../../util/GenerationUtil';
-import passport from 'fastify-passport';
-import {getNextUid} from '../../util/RedisUtil';
 import Filter from 'bad-words';
+import {FastifyInstance} from 'fastify';
+import passport from 'fastify-passport';
+import {v5} from 'uuid';
 import {Invite} from '../../documents/Invite';
+import {User} from '../../documents/User';
+import {authInterfaces} from '../../interfaces/AuthInterfaces';
+import {generateRandomString} from '../../util/GenerationUtil';
+import {getFromRedis, setInRedis} from '../../util/RedisUtil';
 import {hasTimeExpired} from '../../util/Util';
+import {loginInterface} from './../../interfaces/AuthInterfaces';
 
 const filter = new Filter();
+
+async function getNextUid() {
+  const uid = await getFromRedis('uid', 1);
+  await setInRedis('uid', uid + 1);
+  return uid;
+}
 
 export default async function AuthRouter(router: FastifyInstance) {
   router.post<{Body: authInterfaces}>(

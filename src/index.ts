@@ -1,53 +1,29 @@
 import fastify from 'fastify';
+import fastifyAutoload from 'fastify-autoload';
 import fastifyCors from 'fastify-cors';
 import fastifyHelmet from 'fastify-helmet';
-import fastifyAutoload from 'fastify-autoload';
 import multer from 'fastify-multer/lib/lib/content-parser';
-import {config} from 'dotenv';
-import mongoose from 'mongoose';
-import {checkBucket} from './util/MinIO';
 import passport from 'fastify-passport';
-import fastifySecureSesstion from 'fastify-secure-session';
 import fastifyRateLimit from 'fastify-rate-limit';
+import fastifySecureSesstion from 'fastify-secure-session';
 import Redis from 'ioredis';
+import mongoose from 'mongoose';
+import {checkInvites} from './routes/InviteRouter';
+import {checkPremium} from './routes/PremiumRouter';
+import {checkBucket} from './util/MinIO';
 import {setupPassport} from './util/SetupPassport';
 import path = require('path');
-import {checkPremium} from './routes/PremiumRouter';
-import {checkInvites} from './routes/InviteRouter';
 
-config();
-const errors = [];
-const requiredVars = [
-  'PORT',
-  'MONGODB_URL',
-  'MINIO_ENDPOINT',
-  'MINIO_ACCESS_KEY',
-  'MINIO_SECRET_KEY',
-  'MINIO_BUCKET',
-  'REDIS_URL',
-  'COOKIE_SECRET',
-];
+import config from './config/config.json';
 
-for (const env of requiredVars) {
-  // eslint-disable-next-line no-prototype-builtins
-  if (!process.env.hasOwnProperty(env)) {
-    errors.push(env);
-  }
-}
-
-if (errors.length > 0)
-  throw new Error(
-    `${errors.join(', ')} ${errors.length > 1 ? 'are' : 'is'} required`
-  );
-
-const PORT = process.env.PORT || 8080;
+const PORT = config.port || 8080;
 
 const server = fastify({
   trustProxy: true,
 });
 
 //Redis for caching, so we can scale
-export const redis = new Redis(process.env.REDIS_URL, {
+export const redis = new Redis(config.redis.url, {
   connectionName: 'backend',
   connectTimeout: 0,
   maxRetriesPerRequest: 1,
@@ -76,7 +52,7 @@ server.register(fastifyRateLimit, {
 
 //Secure session for passport
 server.register(fastifySecureSesstion, {
-  key: Buffer.from(process.env.COOKIE_SECRET!, 'hex'),
+  key: Buffer.from(config.secrets.cookie, 'hex'),
   cookieName: 'session_id',
   cookie: {
     httpOnly: true,
@@ -131,7 +107,7 @@ server.listen(PORT, '0.0.0.0', (err, address) => {
   }
   console.log('Server started on ' + address);
   mongoose
-    .connect(process.env.MONGODB_URL!, {
+    .connect(config.mongo.url, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })

@@ -20,9 +20,3 @@ export async function getFromRedis(
 export async function setInRedis(name: string, value: any) {
   redis.set(name, value);
 }
-
-export async function getNextUid() {
-  const uid = await getFromRedis('uid', 1);
-  await setInRedis('uid', uid + 1);
-  return uid;
-}
