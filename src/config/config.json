@@ -4,11 +4,11 @@
     "url": "mongodb+srv://mongo:hHsB7hGTtwTcfiBw@cluster0.7pdfe.mongodb.net/imgs?retryWrites=true&w=majority"
   },
   "minio": {
-    "endpoint": "127.0.0.1",
-    "port": 9000,
-    "accessKey": "minioadmin",
-    "secretKey": "minioadmin",
-    "bucket": "imgs"
+    "endpoint": "cdn.imgs.bar",
+    "port": 443,
+    "accessKey": "FHPhLqTY7mbxYYRSb3tC5ExtVwKcEb7HevsuhzMX6biZW6oxdP3bD3PLG4E6KraLAR",
+    "secretKey": "wWcLCU7odkoRXLvvQX2pWMwAfF583BndkH8SPJf2WHp7e78dhDrWi8hgSSVzip6zHx",
+    "bucket": "imgs-beta"
   },
   "redis": {
     "url": "redis://:tdf87Uh4jO8hhe2TDhl766E0Cn1n6Sw7@redis-18374.c259.us-central1-2.gce.cloud.redislabs.com:18374"

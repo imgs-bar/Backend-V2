@@ -5,7 +5,7 @@ export const minio = new Client({
   endPoint: config.minio.endpoint,
   accessKey: config.minio.accessKey,
   secretKey: config.minio.secretKey,
-  useSSL: false,
+  useSSL: true,
   port: config.minio.port,
 });
 
