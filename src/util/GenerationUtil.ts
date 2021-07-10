@@ -3,12 +3,12 @@ import {extname} from 'path';
 import emojis from './emojis.json';
 
 export function generateFileName(user: User, fileName: string) {
-  return (user.settings.emojiUrl
-    ? generateRandomEmojis(user.settings.longUrl ? 10 : 5)
-    : generateRandomString(user.settings.longUrl ? 10 : 5)) +
-    user.settings.showExtension
-    ? extname(fileName)
-    : '';
+  return (
+    (user.settings.emojiUrl
+      ? generateRandomEmojis(user.settings.longUrl ? 10 : 5)
+      : generateRandomString(user.settings.longUrl ? 10 : 5)) +
+    (user.settings.showExtension ? extname(fileName) : '')
+  );
 }
 
 export function generateRandomString(length: number) {
