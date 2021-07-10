@@ -1,7 +1,7 @@
 {
   "port": 8080,
   "mongo": {
-    "url": "mongodb://localhost:27017/"
+    "url": "mongodb+srv://mongo:hHsB7hGTtwTcfiBw@cluster0.7pdfe.mongodb.net/imgs?retryWrites=true&w=majority"
   },
   "minio": {
     "endpoint": "127.0.0.1",
@@ -20,6 +20,6 @@
     "cookie": "255ebe22adb8f58cfee789332c30b7859a5d31cbf9cda13bd025e88f78386c34"
   },
   "webhooks": {
-    "premium": ""
+    "premium": "https://canary.discord.com/api/webhooks/863468646587564034/MvefuImU3CcADtKBWsTSezH_a-Zl7GZix1-LweSRKlRrT1zJUGeoXgUD-c_CWw0Ms1NT"
   }
 }

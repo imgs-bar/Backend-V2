@@ -3,6 +3,7 @@ import {Invite} from '../documents/Invite';
 import {User} from '../documents/User';
 import {premiumHandler} from '../handlers/PremiumHandler';
 import {generateRandomString} from '../util/GenerationUtil';
+import {sendPremiumExpire} from '../util/LogUtil';
 import {msToTime} from '../util/Util';
 import {setUidInterface} from './../interfaces/PremiumInterfaces';
 
@@ -68,10 +69,11 @@ export async function checkPremium() {
       user.roles.premium.endsAt <= new Date().getTime() &&
       user.roles.premium.endsAt !== -1
     ) {
-      console.log(`${user.username}'s premium expired.`);
-
       user.roles.premium.status = false;
       user.uid = user.originalUid;
+
+      console.log(`${user.username}'s premium expired.`);
+      await sendPremiumExpire(user).catch(err => console.log(err));
 
       await user.save();
     }
