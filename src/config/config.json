@@ -20,6 +20,7 @@
     "cookie": "255ebe22adb8f58cfee789332c30b7859a5d31cbf9cda13bd025e88f78386c34"
   },
   "webhooks": {
-    "premium": "https://canary.discord.com/api/webhooks/863468646587564034/MvefuImU3CcADtKBWsTSezH_a-Zl7GZix1-LweSRKlRrT1zJUGeoXgUD-c_CWw0Ms1NT"
+    "premium": "https://canary.discord.com/api/webhooks/863468646587564034/MvefuImU3CcADtKBWsTSezH_a-Zl7GZix1-LweSRKlRrT1zJUGeoXgUD-c_CWw0Ms1NT",
+    "startup": "https://canary.discord.com/api/webhooks/863463199285706752/cFiN4t16Vy4vCsERhT-k8ILdLXuFPY24biCp24l-Zv2bDeWf-OzCu1zKDBiqxPOygoOS"
   }
 }

@@ -20,7 +20,7 @@ export default async function ConfigRouter(router: FastifyInstance) {
         Name: `${user.username} on imgs.bar.sxcu`,
         DestinationType: 'ImageUploader, FileUploader',
         RequestType: 'POST',
-        RequestURL: 'https://betaapi.imgs.bar/upload/sharex',
+        RequestURL: 'https://betaapi.imgs.bar/v2/upload/sharex',
         FileFormName: 'file',
         Body: 'MultipartFormData',
         Headers: {

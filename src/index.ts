@@ -15,6 +15,7 @@ import {setupPassport} from './util/SetupPassport';
 import path = require('path');
 
 import config from './config/config.json';
+import {sendStartup} from './util/LogUtil';
 
 const PORT = config.port || 8080;
 
@@ -114,6 +115,8 @@ server.listen(PORT, '0.0.0.0', (err, address) => {
     .then(() => {
       console.log('Connected to MongoDB');
       (async () => {
+        sendStartup();
+
         checkPremium();
         setInterval(checkPremium, 10 * 60 * 1000);
 
