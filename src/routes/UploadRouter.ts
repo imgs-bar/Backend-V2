@@ -59,11 +59,11 @@ export default async function UploadRouter(router: FastifyInstance) {
 
       await file.save();
 
-      await minio.putObject(
-        config.minio.bucket,
-        file.fileName,
-        request.file.buffer
-      );
+      user.uploads += 1;
+      await user.save();
+
+      minio.putObject(config.minio.bucket, file.fileName, request.file.buffer);
+
       return {file};
     }
   );
