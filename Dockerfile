@@ -2,7 +2,7 @@ FROM node:14
 WORKDIR /app
 
 COPY package*.json ./
-RUN yarn install
+RUN yarn install --prod
 
 COPY tsconfig.json ./
 

@@ -2,8 +2,9 @@ import {EmbedBuilder} from './../util/Embed';
 import {FastifyInstance} from 'fastify';
 import {authHandler} from '../handlers/AuthHandler';
 import {cf, fetchAllZones} from '../util/Cloudflare';
-import {sendCloudflareLog} from '../util/LogUtil';
+import {sendDomainLog} from '../util/LogUtil';
 import colors from '../util/colors.json';
+import {deletev1Domain} from '../util/v1Util';
 export default async function DomainRouter(router: FastifyInstance) {
   router.get('/list', {preHandler: authHandler}, async (req, res) => {
     res.send({
@@ -20,12 +21,19 @@ export async function checkDomains() {
         .setTitle(`${zone.name} Removed from the account`)
         .setColor(colors.cloudflare)
         .setDescription(
-          `Zone ${zone.name} has been removed from your Cloudflare account.`
+          `Zone ${zone.name} has been removed from the Cloudflare account.`
         )
         .addField('Zone ID', `\`\`\`${zone.id}\`\`\``, true)
         .addField('Zone Status', `\`\`\`${zone.status}\`\`\``, true);
-      sendCloudflareLog(embed);
-      await cf.zones.del(zone.id);
+
+      try {
+        sendDomainLog(embed);
+
+        await deletev1Domain(zone.name);
+        await cf.zones.del(zone.id);
+      } catch (err) {
+        console.error(err);
+      }
     }
   }
 }

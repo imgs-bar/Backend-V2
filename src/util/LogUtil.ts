@@ -48,15 +48,14 @@ export async function sendStartup() {
   );
 }
 
-export async function sendCloudflareLog(embed: EmbedBuilder) {
+export async function sendDomainLog(embed: EmbedBuilder) {
   const options = {
     headers: {
       'Content-Type': 'application/json',
     },
   };
-
   return await axios.post(
-    `${config.webhooks.startup}`,
+    `${config.webhooks.domains}`,
     {embeds: [embed.toJSON()]},
     options
   );
