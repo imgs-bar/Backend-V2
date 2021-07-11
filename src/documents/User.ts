@@ -1,68 +1,152 @@
 import {Document, model, Model, Schema} from 'mongoose';
 
 export interface User extends Document {
-  //The user's UUID
+  /**
+   * The users UUID
+   */
   _id: string;
 
-  //The users UID
+  /**
+   * The users UID
+   */
   uid: number;
 
-  //The users original UID
+  /**
+   * The users original uid
+   */
   originalUid: number;
 
-  //The user's email
+  /**
+   * The users email address
+   */
   email: string;
 
-  //The user's username (changeable)
+  /**
+   * The users username
+   */
   username: string;
 
-  //The users password (hashed in argon2)
+  /**
+   * The users password (hashed)
+   */
   password: string;
 
-  //The amount of ungenerated invites the user has left.
+  /**
+   * The amount of ungenerated invites the user has left.
+   */
   invites: number;
 
-  //The user's upload key
+  /**
+   * The users upload key
+   */
   key: string;
 
-  //The amount of uploads the user has
+  /**
+   * The users amount of uploads
+   */
   uploads: number;
 
-  //The amount of people this user has invited
+  /**
+   * The users amount of invited people
+   */
   invited: number;
 
-  //The user's banned status.
+  /**
+   * The users banned status
+   */
   banned: {
-    //If they're banned
+    /**
+     * If they're banned
+     */
     status: boolean;
 
-    //The reason they are banned
+    /**
+     * The users reason for being banned
+     */
     reason?: string | null;
   };
 
-  //The user's cooldowns
+  /**
+   * The users cooldowns
+   */
   cooldowns: {
-    //Last uid change.
+    /**
+     * The users last uid change
+     */
     lastUidChange: Date;
   };
 
-  //The user's roles
+  /**
+   * The users roles
+   */
   roles: {
     premium: {
-      //If the user currently has premium.
+      /**
+       * Current premium status
+       */
       status: boolean;
 
-      //The unix timestamp when premium expires. -1 if it doesnt
+      /**
+       * When should premium expire
+       */
       endsAt: number;
     };
-    //If the user should have unlimited invites, and access to the admin dashboard.
+    /**
+     * If the user has admin access
+     */
     admin: boolean;
 
-    //If the user should have access to the mod dashboard
+    /**
+     * If the user has moderator access
+     */
     mod: boolean;
   };
 
-  // The user's settings
+  /**
+   * The users discord stuff
+   */
+  discord: {
+    /**
+     * If the discord is currently linked
+     */
+    linked: boolean;
+
+    /**
+     * The users discord id
+     */
+    id?: string;
+
+    /**
+     * The users discord discriminator / tag
+     */
+    discriminator?: string;
+
+    /**
+     * The users refresh token
+     */
+    refreshToken?: string;
+    /**
+     * The users discord avatar url
+     */
+    avatar?: string;
+  };
+
+  /**
+   * The users badges
+   */
+  badges: {
+    verified: boolean;
+    earlySupporter: boolean;
+  };
+
+  /**
+   * If the users profile is private
+   */
+  private: boolean;
+
+  /**
+   * The users settings
+   */
   settings: {
     //If the user's upload URLS should be longer.
     longUrl: boolean;
@@ -120,8 +204,8 @@ export interface User extends Document {
       //The embed author.
       fake: boolean;
 
-      //The domain's embed _id.
-      embed: string;
+      //The domain's embed's _id.
+      embeds: string[];
 
       //What should be added to the filename, also supports directories
       fileNamePrefix: string;
@@ -140,6 +224,13 @@ const UserSchema: Schema = new Schema({
   key: String,
   uploads: {type: Number, default: 0},
   invited: {type: Number, default: 0},
+  discord: {
+    linked: {type: Boolean, default: false},
+    id: {type: String, default: null},
+    discriminator: {type: String, default: null},
+    refreshToken: {type: String, default: null},
+    avatar: {type: String, default: null},
+  },
   banned: {
     status: {type: Boolean, default: false},
     reason: {
@@ -164,6 +255,11 @@ const UserSchema: Schema = new Schema({
       default: false,
     },
   },
+  badges: {
+    verified: {type: Boolean, default: false},
+    earlySupporter: {type: Boolean, default: false},
+  },
+  private: {type: Boolean, default: false},
   settings: {
     longUrl: {type: Boolean, default: false},
     emojiUrl: {type: Boolean, default: true},
@@ -213,7 +309,7 @@ const UserSchema: Schema = new Schema({
           name: String,
           subDomain: String,
           fake: Boolean,
-          embed: String,
+          embeds: [String],
           fileNamePrefix: String,
         },
       ],
@@ -222,7 +318,7 @@ const UserSchema: Schema = new Schema({
           name: 'imgs.bar',
           subDomain: 'beta',
           fake: false,
-          embed: 'default',
+          embeds: ['default'],
           fileNamePrefix: '',
         },
       ],

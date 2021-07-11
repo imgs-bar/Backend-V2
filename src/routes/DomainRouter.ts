@@ -1,15 +1,16 @@
-import {EmbedBuilder} from './../util/Embed';
 import {FastifyInstance} from 'fastify';
 import {authHandler} from '../handlers/AuthHandler';
 import {cf, fetchAllZones} from '../util/Cloudflare';
-import {sendDomainLog} from '../util/LogUtil';
 import colors from '../util/colors.json';
+import {sendDomainLog} from '../util/LogUtil';
 import {deletev1Domain} from '../util/v1Util';
+import {Domain} from './../documents/Domain';
+import {EmbedBuilder} from './../util/Embed';
 export default async function DomainRouter(router: FastifyInstance) {
   router.get('/list', {preHandler: authHandler}, async (req, res) => {
-    res.send({
-      message: 'Hello world!',
-    });
+    const domains = await Domain.find({}).select('domain _id');
+
+    return res.send({domains});
   });
 }
 
@@ -24,7 +25,12 @@ export async function checkDomains() {
           `Zone ${zone.name} has been removed from the Cloudflare account.`
         )
         .addField('Zone ID', `\`\`\`${zone.id}\`\`\``, true)
-        .addField('Zone Status', `\`\`\`${zone.status}\`\`\``, true);
+        .addField('Zone Status', `\`\`\`${zone.status}\`\`\``, true)
+        .addField(
+          'NameServers',
+          `\`\`\`${zone.original_name_servers[0]} --> ${zone.name_servers[0]} \n ${zone.original_name_servers[1]} --> ${zone.name_servers[1]}\`\`\``,
+          true
+        );
 
       try {
         sendDomainLog(embed);

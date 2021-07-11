@@ -42,11 +42,7 @@ export default async function UploadRouter(router: FastifyInstance) {
           return reply.status(413).send({message: 'File is too big!'});
         }
 
-        const cdnFileName =
-          uuid() +
-          '.' +
-          request.file.originalname.split('.')[1] +
-          extname(request.file.originalname);
+        const cdnFileName = uuid() + extname(request.file.originalname);
 
         const sha1 = crypto.createHash('sha1');
         const hash = sha1.update(request.file.buffer).digest('hex');
