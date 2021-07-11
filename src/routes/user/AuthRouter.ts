@@ -14,7 +14,7 @@ import {loginInterface} from './../../interfaces/AuthInterfaces';
 const filter = new Filter();
 
 async function getNextUid() {
-  const uid = await getFromRedis('uid', 1);
+  const uid = parseInt(await getFromRedis('uid', 1));
   await setInRedis('uid', uid + 1);
   return uid;
 }
