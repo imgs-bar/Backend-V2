@@ -16,6 +16,7 @@ import path = require('path');
 
 import config from './config/config.json';
 import {sendStartup} from './util/LogUtil';
+import {checkDomains} from './routes/DomainRouter';
 
 const PORT = config.port || 8080;
 
@@ -122,6 +123,9 @@ server.listen(PORT, '0.0.0.0', (err, address) => {
 
         checkInvites();
         setInterval(checkInvites, 60 * 60 * 1000);
+
+        checkDomains();
+        setInterval(checkDomains, 60 * 60 * 1000);
       })();
 
       checkBucket().then().catch();

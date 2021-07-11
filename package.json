@@ -26,6 +26,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@cloudflare/types": "^6.8.13",
     "@types/bad-words": "^3.0.0",
     "@types/cloudflare": "^2.7.4",
     "@types/ioredis": "^4.26.4",

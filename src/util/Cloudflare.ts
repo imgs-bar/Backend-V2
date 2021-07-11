@@ -1,7 +1,8 @@
+/* eslint-disable node/no-unpublished-import */
 import axios, {Method} from 'axios';
-import Cloudflare from 'cloudflare';
+import Cloudflare, {Zones} from 'cloudflare';
 import config from '../config/config.json';
-
+import {Zone} from '@cloudflare/types';
 export const cf = new Cloudflare({
   email: config.cloudflare.email,
   key: config.cloudflare.apiKey,
@@ -40,7 +41,7 @@ async function request(
  * @param {number} [page=1] - The page number.
  * @return {*} The list of zones
  */
-export async function fetchAllZones(page = 1) {
+export async function fetchAllZones(page = 1): Promise<Zone[]> {
   const data = await request(
     '/zones',
     'GET',
@@ -51,9 +52,9 @@ export async function fetchAllZones(page = 1) {
     }
   );
 
-  if (page < data.data.result_info.total_pages) {
-    data.data.result = data.data.result.concat(await fetchAllZones(page + 1));
+  if (page < data.result_info.total_pages) {
+    data.result = data.result.concat(await fetchAllZones(page + 1));
   }
 
-  return data.data.result;
+  return data.result;
 }

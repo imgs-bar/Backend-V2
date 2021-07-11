@@ -1,3 +1,4 @@
+import {Domain} from './../documents/Domain';
 import {FastifyInstance} from 'fastify';
 import {File} from '../documents/File';
 import {User} from '../documents/User';
@@ -8,6 +9,8 @@ export default async function StatsRouter(router: FastifyInstance) {
   router.get('/', async (request, reply) => {
     let users = parseInt(await Cache.get('cache.users'));
     let files = parseInt(await Cache.get('cache.files'));
+    let domains = parseInt(await Cache.get('cache.domains'));
+
     if (!users) {
       users = await User.estimatedDocumentCount().exec();
       await Cache.set('cache.users', users);
@@ -15,6 +18,10 @@ export default async function StatsRouter(router: FastifyInstance) {
     if (!files) {
       files = await File.estimatedDocumentCount().exec();
       await Cache.set('cache.files', files);
+    }
+    if (!domains) {
+      domains = await Domain.estimatedDocumentCount().exec();
+      await Cache.set('cache.domains', domains);
     }
     return reply.send({
       users,
