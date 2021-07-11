@@ -1,3 +1,4 @@
+import {extname} from 'path';
 import config from '../config/config.json';
 import {FastifyInstance} from 'fastify';
 import multer from 'fastify-multer';
@@ -6,7 +7,7 @@ import {File} from '../documents/File';
 import {minio} from '../util/MinIO';
 import {generateFileName} from '../util/GenerationUtil';
 import {uploadHandler} from '../handlers/UploadHandler';
-
+import {v4 as uuid} from 'uuid';
 export default async function UploadRouter(router: FastifyInstance) {
   const upload = multer({
     storage: multer.memoryStorage(),
@@ -40,6 +41,13 @@ export default async function UploadRouter(router: FastifyInstance) {
         ) {
           return reply.status(413).send({message: 'File is too big!'});
         }
+
+        const cdnFileName =
+          uuid() +
+          '.' +
+          request.file.originalname.split('.')[1] +
+          extname(request.file.originalname);
+
         const sha1 = crypto.createHash('sha1');
         const hash = sha1.update(request.file.buffer).digest('hex');
 
@@ -50,6 +58,8 @@ export default async function UploadRouter(router: FastifyInstance) {
 
         file.hash = hash;
         file.size = request.file.size!;
+
+        file.cdnFileName = cdnFileName;
 
         file.uploader = user._id;
 
@@ -65,11 +75,7 @@ export default async function UploadRouter(router: FastifyInstance) {
         user.uploads += 1;
         await user.save();
 
-        minio.putObject(
-          config.minio.bucket,
-          file.fileName,
-          request.file.buffer
-        );
+        minio.putObject(config.minio.bucket, cdnFileName, request.file.buffer);
 
         return reply.send({
           imageUrl: `https://${config.minio.endpoint}/${config.minio.bucket}/${file.fileName}`,

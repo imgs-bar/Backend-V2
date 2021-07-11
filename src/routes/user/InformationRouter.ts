@@ -1,10 +1,10 @@
-import {botInterface} from './../../handlers/BotHandler';
-import {setMotdInterface} from './../../interfaces/InformationInterfaces';
 import Filter from 'bad-words';
 import {FastifyInstance} from 'fastify';
 import {authHandler} from '../../handlers/AuthHandler';
 import {botHandler} from '../../handlers/BotHandler';
 import {getFromRedis, setInRedis} from '../../util/RedisUtil';
+import {botInterface} from './../../handlers/BotHandler';
+import {setMotdInterface} from './../../interfaces/InformationInterfaces';
 
 const filter = new Filter();
 

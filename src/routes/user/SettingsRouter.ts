@@ -1,10 +1,10 @@
-import {User} from './../../documents/User';
 import {FastifyInstance} from 'fastify';
 import {authHandler} from '../../handlers/AuthHandler';
 import {
   settingsBodyInterface,
   settingsParamsInterface,
 } from '../../interfaces/SettingsInterfaces';
+import {User} from './../../documents/User';
 
 /**
  * Settings route for authenticated users

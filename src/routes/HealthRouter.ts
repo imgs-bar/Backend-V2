@@ -1,8 +1,8 @@
 import {FastifyInstance} from 'fastify';
+import * as os from 'os';
+import {mem} from 'systeminformation';
 import {mongoose, redis} from '../index';
 import {formatBytes} from '../util/Util';
-import {mem} from 'systeminformation';
-import * as os from 'os';
 
 export default async function HealthRouter(router: FastifyInstance) {
   router.get('/', async (request, reply) => {

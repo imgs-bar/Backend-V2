@@ -1,7 +1,7 @@
 import {FastifyInstance} from 'fastify';
 import {Invite} from '../documents/Invite';
-import {generateRandomString} from '../util/GenerationUtil';
 import {authHandler} from '../handlers/AuthHandler';
+import {generateRandomString} from '../util/GenerationUtil';
 
 export default async function InviteRouter(router: FastifyInstance) {
   router.addHook('preHandler', authHandler);

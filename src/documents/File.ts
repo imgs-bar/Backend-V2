@@ -28,6 +28,11 @@ interface File extends Document {
   uploader: string;
 
   /**
+   * Filename stored on the cdn since it doesnt support emojis.
+   */
+  cdnFileName: string;
+
+  /**
    * The files embed settings
    */
   embed: {
