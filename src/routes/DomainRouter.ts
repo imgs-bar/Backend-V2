@@ -78,7 +78,7 @@ export async function checkDomains() {
 
       if (!domain) {
         await Domain.create({
-          id: zone.id,
+          _id: zone.id,
           name: zone.name,
           nameservers: zone.name_servers,
           private: false,
