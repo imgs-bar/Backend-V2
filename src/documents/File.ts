@@ -33,6 +33,10 @@ interface File extends Document {
   cdnFileName: string;
 
   /**
+   * The file mimetype
+   */
+  mimeType: string;
+  /**
    * The files embed settings
    */
   embed: {
@@ -60,7 +64,7 @@ interface File extends Document {
     };
 
     /**
-     *
+     * File author stuff
      */
     author: {
       text: string;
@@ -85,6 +89,7 @@ const FileSchema: Schema = new Schema({
   uploader: String,
   size: Number,
   cdnFileName: String,
+  mimeType: String,
   embed: {
     _id: String,
     enabled: Boolean,

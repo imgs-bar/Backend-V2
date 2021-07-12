@@ -59,6 +59,8 @@ export default async function UploadRouter(router: FastifyInstance) {
 
         file.uploader = user._id;
 
+        file.mimeType = request.file.mimetype!;
+
         file.embed = {
           ...user.settings.embeds.list[
             Math.floor(Math.random() * user.settings.embeds.list.length)
