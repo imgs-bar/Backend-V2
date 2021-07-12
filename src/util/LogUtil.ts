@@ -31,23 +31,6 @@ export async function sendPremiumExpire(user: User) {
   );
 }
 
-export async function sendStartup() {
-  const options = {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  };
-  const embed = new EmbedBuilder()
-    .setTitle('API is up and running!')
-    .setColor(colors.success);
-
-  return await axios.post(
-    `${config.webhooks.startup}`,
-    {embeds: [embed.toJSON()]},
-    options
-  );
-}
-
 export async function sendDomainLog(embed: EmbedBuilder) {
   const options = {
     headers: {

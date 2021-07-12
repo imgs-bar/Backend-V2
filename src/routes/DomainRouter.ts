@@ -109,7 +109,7 @@ export async function checkDomains() {
           for (const dnsRecord of defaultDnsRecords) {
             await createDNSRecord(
               zone.id!,
-              dnsRecord.name.replace('{domain}', zone.name).replace('.', ''),
+              dnsRecord.name.replace('{domain}', '').replace('.', ''),
               dnsRecord.content,
               'CNAME',
               dnsRecord.proxied

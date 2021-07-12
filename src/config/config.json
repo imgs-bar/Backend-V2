@@ -27,7 +27,6 @@
   },
   "webhooks": {
     "premium": "https://canary.discord.com/api/webhooks/863468646587564034/MvefuImU3CcADtKBWsTSezH_a-Zl7GZix1-LweSRKlRrT1zJUGeoXgUD-c_CWw0Ms1NT",
-    "startup": "https://canary.discord.com/api/webhooks/863757591670554635/8X4kE-pJzKWVyvwhuWmzxWMD-d2mtwt9zXiwkoIjDSNG6JrhY5SNKB6Gy2TpFZE_imC_",
     "domains": "https://canary.discord.com/api/webhooks/863747021293879307/PHPXi3o2r8dC322ojB2Qgf7SNRiFjrXZ5PIr8ynzTZjSwrojh1cAvXQ0WRt-xZY7wlFW"
   },
   "cloudflare": {

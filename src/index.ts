@@ -8,15 +8,13 @@ import fastifyRateLimit from 'fastify-rate-limit';
 import fastifySecureSesstion from 'fastify-secure-session';
 import Redis from 'ioredis';
 import mongoose from 'mongoose';
+import config from './config/config.json';
+import {checkDomains} from './routes/DomainRouter';
 import {checkInvites} from './routes/InviteRouter';
 import {checkPremium} from './routes/PremiumRouter';
 import {checkBucket} from './util/MinIO';
 import {setupPassport} from './util/SetupPassport';
 import path = require('path');
-
-import config from './config/config.json';
-import {sendStartup} from './util/LogUtil';
-import {checkDomains} from './routes/DomainRouter';
 
 const PORT = config.port || 8080;
 
@@ -116,8 +114,6 @@ server.listen(PORT, '0.0.0.0', (err, address) => {
     .then(() => {
       console.log('Connected to MongoDB');
       (async () => {
-        //sendStartup();
-
         checkPremium();
         setInterval(checkPremium, 10 * 60 * 1000);
 
