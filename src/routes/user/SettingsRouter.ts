@@ -56,4 +56,4 @@ export default async function SettingsRouter(router: FastifyInstance) {
     }
   );
 }
-const autoPrefix = '/settings';
+export const autoPrefix = '/settings';

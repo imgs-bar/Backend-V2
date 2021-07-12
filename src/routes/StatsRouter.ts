@@ -57,4 +57,4 @@ export default async function StatsRouter(router: FastifyInstance) {
     }
   );
 }
-const autoPrefix = '/stats';
+export const autoPrefix = '/stats';

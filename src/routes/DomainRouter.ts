@@ -45,4 +45,4 @@ export async function checkDomains() {
   }
 }
 
-const autoPrefix = '/domains';
+export const autoPrefix = '/domains';

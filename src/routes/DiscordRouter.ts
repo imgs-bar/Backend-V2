@@ -118,4 +118,4 @@ export default async function DiscordRouter(router: FastifyInstance) {
     }
   );
 }
-const autoPrefix = '/discord';
+export const autoPrefix = '/discord';

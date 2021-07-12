@@ -42,4 +42,4 @@ export async function checkInvites() {
     }
   }
 }
-const autoPrefix = '/invites';
+export const autoPrefix = '/invites';

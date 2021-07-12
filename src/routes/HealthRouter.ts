@@ -38,4 +38,4 @@ export default async function HealthRouter(router: FastifyInstance) {
     });
   });
 }
-const autoPrefix = '/health';
+export const autoPrefix = '/health';

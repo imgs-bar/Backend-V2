@@ -172,4 +172,4 @@ export default async function AuthRouter(router: FastifyInstance) {
     return reply.send({message: 'Logged you out.'});
   });
 }
-const autoPrefix = '/auth';
+export const autoPrefix = '/auth';

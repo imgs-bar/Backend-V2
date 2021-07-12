@@ -35,4 +35,4 @@ export default async function AuthRouter(router: FastifyInstance) {
     }
   );
 }
-const autoPrefix = '/information';
+export const autoPrefix = '/information';
