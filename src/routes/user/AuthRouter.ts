@@ -30,7 +30,12 @@ export default async function AuthRouter(router: FastifyInstance) {
           properties: {
             email: {type: 'string', format: 'email'},
             password: {type: 'string', maxLength: 100, minLength: 6},
-            username: {type: 'string', minLength: 3, maxLength: 12},
+            username: {
+              type: 'string',
+              minLength: 3,
+              maxLength: 12,
+              pattern: '^[a-zA-Z0-9]*$',
+            },
             invite: {type: 'string', minLength: 40, maxLength: 40},
           },
         },
@@ -109,7 +114,12 @@ export default async function AuthRouter(router: FastifyInstance) {
           type: 'object',
           required: ['username', 'password', 'rememberMe'],
           properties: {
-            username: {type: 'string', minLength: 3},
+            username: {
+              type: 'string',
+              minLength: 3,
+              maxLength: 12,
+              pattern: '^[a-zA-Z0-9]*$',
+            },
             password: {type: 'string', maxLength: 100, minLength: 6},
             rememberMe: {type: 'boolean'},
           },

@@ -32,15 +32,17 @@
   },
   "cloudflare": {
     "email": "pringlepot123@gmail.com",
-    "apiKey": "331a15e72579c5b673d861c652913bd358826"
+    "apiKey": "331a15e72579c5b673d861c652913bd358826",
+    "accountId": "d5b0246ad59e020ea69884672c035c43"
   },
   "v1": {
     "botKey": "7BkLwcatEScxY6hTEokwL3kgjaPRLF5wujHd7NmEe8VG6X4wdqeg56d8SGp5Vx2dEEU9uE5JLPov5LWvsDiDK3aRPi4tugpg8nDxqDXJtw26TkkUvCpPBWfaH7cBqt5h",
     "backend": "https://api.imgs.bar/"
   },
   "discord": {
-    "scopes": ["identify", "guilds.join", "guilds", "email"],
+    "scopes": ["identify", "guilds.join"],
     "clientId": "860463744585039913",
     "clientSecret": "3zrogIdI-hBRZIg3zoeri1dzjU3FwQ_3"
-  }
+  },
+  "ignoredDomains": ["imgs.bar"]
 }

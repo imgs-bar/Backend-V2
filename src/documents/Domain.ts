@@ -35,13 +35,18 @@ interface Domain extends Document {
    * UUID's of the people that are able to use this domain when private.
    */
   usableBy: string[];
+
+  /**
+   * When does the domain expire?
+   */
+  expiresAt: Date;
 }
 
 const DomainSchema: Schema = new Schema({
   _id: String,
   domain: String,
   nameservers: [String],
-  setup: Boolean,
+  setup: {type: Boolean, default: false},
   private: Boolean,
   approved: {type: Boolean, default: false},
   usableBy: {type: [String], default: []},

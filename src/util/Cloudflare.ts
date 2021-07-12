@@ -1,7 +1,7 @@
 /* eslint-disable node/no-unpublished-import */
 import axios, {Method} from 'axios';
 import config from '../config/config.json';
-import {Zone} from '@cloudflare/types';
+import {DNSRecord, Zone, Domain} from '@cloudflare/types';
 
 async function request(
   endpoint: string,
@@ -56,4 +56,37 @@ export async function fetchAllZones(page = 1): Promise<Zone[]> {
 
 export async function deleteZone(id: string) {
   return await request(`/zones/${id}`, 'DELETE');
+}
+
+export async function getDnsRecords(id: string): Promise<DNSRecord[]> {
+  return (await request(`/zones/${id}/dns_records`, 'GET')).result;
+}
+
+export async function deleteDNSZone(zoneid: string, recordId: string) {
+  return await request(`/zones/${zoneid}/dns_records/${recordId}`, 'DELETE');
+}
+
+export async function createDNSRecord(
+  zoneid: string,
+  name: string,
+  content: string,
+  type: 'A' | 'AAAA' | 'CNAME' | 'TXT' | 'SRV' | 'SPF' | 'NS' | 'CAA' | 'MX',
+  proxied: boolean
+) {
+  return await request(`/zones/${zoneid}/dns_records`, 'POST', {
+    type,
+    name,
+    content,
+    ttl: 1,
+    proxied,
+  });
+}
+
+export async function getRegistrarInfo(domain: string): Promise<Domain> {
+  return (
+    await request(
+      `/accounts/${config.cloudflare.accountId}/registrar/domains/${domain}`,
+      'GET'
+    )
+  ).result;
 }
