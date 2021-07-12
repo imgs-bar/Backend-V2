@@ -24,6 +24,7 @@ export default async function StatsRouter(router: FastifyInstance) {
       await Cache.set('cache.domains', domains);
     }
     return reply.send({
+      domains,
       users,
       files,
     });
