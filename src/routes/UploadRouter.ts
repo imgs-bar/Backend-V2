@@ -44,6 +44,10 @@ export default async function UploadRouter(router: FastifyInstance) {
 
         const cdnFileName = uuid() + extname(request.file.originalname);
 
+        const domain =
+          user.settings.domains[
+            Math.floor(Math.random() * user.settings.embeds.list.length)
+          ];
         const sha1 = crypto.createHash('sha1');
         const hash = sha1.update(request.file.buffer).digest('hex');
 
@@ -62,9 +66,13 @@ export default async function UploadRouter(router: FastifyInstance) {
         file.mimeType = request.file.mimetype!;
 
         file.embed = {
-          ...user.settings.embeds.list[
-            Math.floor(Math.random() * user.settings.embeds.list.length)
-          ],
+          ...user.settings.embeds.list.find(
+            e =>
+              e._id ===
+              domain.embeds[
+                Math.floor(Math.random() * user.settings.embeds.list.length)
+              ]
+          )!,
           enabled: user.settings.embeds.enabled,
         };
 
@@ -76,7 +84,7 @@ export default async function UploadRouter(router: FastifyInstance) {
         minio.putObject(config.minio.bucket, cdnFileName, request.file.buffer);
 
         return reply.send({
-          imageUrl: `https://${config.minio.endpoint}/${config.minio.bucket}/${file.cdnFileName}`,
+          imageUrl: `https://beta.${domain.name}${file.fileName}`,
         });
       } catch (error) {
         return reply.status(500).send({message: error.message});
