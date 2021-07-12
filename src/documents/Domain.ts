@@ -50,6 +50,7 @@ const DomainSchema: Schema = new Schema({
   private: Boolean,
   approved: {type: Boolean, default: false},
   usableBy: {type: [String], default: []},
+  expiresAt: Date,
 });
 
 export const Domain: Model<Domain> = model('Domain', DomainSchema);
