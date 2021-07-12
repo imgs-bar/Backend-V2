@@ -84,7 +84,7 @@ export default async function UploadRouter(router: FastifyInstance) {
         minio.putObject(config.minio.bucket, cdnFileName, request.file.buffer);
 
         return reply.send({
-          imageUrl: `https://beta.${domain.name}${file.fileName}`,
+          imageUrl: `https://beta.${domain.name}/${file.fileName}`,
         });
       } catch (error) {
         return reply.status(500).send({message: error.message});
