@@ -30,7 +30,7 @@ export default async function SettingsRouter(router: FastifyInstance) {
           properties: {
             id: {
               type: 'string',
-              enum: ['longUrl', 'emojiUrl', 'showExtension'],
+              enum: ['emojiUrl', 'showExtension'],
             },
           },
         },
@@ -51,6 +51,31 @@ export default async function SettingsRouter(router: FastifyInstance) {
       });
       return reply.send({
         message: 'Updated settings',
+        settings: user?.settings,
+      });
+    }
+  );
+
+  router.patch<{Body: settingsBodyInterface}>(
+    '/urlLength',
+    {
+      schema: {
+        body: {
+          type: 'object',
+          required: ['status'],
+          properties: {status: {type: 'number'}},
+        },
+      },
+    },
+    async (request, reply) => {
+      const {user} = request;
+      const {status} = request.body;
+
+      await User.findByIdAndUpdate(user?._id, {
+        'settings.urlLength': status,
+      });
+      return reply.send({
+        message: 'Updated longURL',
         settings: user?.settings,
       });
     }

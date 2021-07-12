@@ -148,7 +148,7 @@ export interface User extends Document {
    * The users settings
    */
   settings: {
-    //If the user's upload URLS should be longer.
+    //Length of users uploads
     urlLength: number;
 
     //If the user's upload URLS should consist of emojis

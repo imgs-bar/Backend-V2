@@ -5,3 +5,7 @@ export interface settingsParamsInterface {
 export interface settingsBodyInterface {
   status: boolean;
 }
+
+export interface urlLengthBodyInterface {
+  status: number;
+}
