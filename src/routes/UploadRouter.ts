@@ -82,4 +82,4 @@ export default async function UploadRouter(router: FastifyInstance) {
     }
   );
 }
-export const autoPrefix = '/upload';
+const autoPrefix = '/upload';

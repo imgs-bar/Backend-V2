@@ -38,4 +38,4 @@ export default async function ConfigRouter(router: FastifyInstance) {
     }
   );
 }
-export const autoPrefix = '/config';
+const autoPrefix = '/config';

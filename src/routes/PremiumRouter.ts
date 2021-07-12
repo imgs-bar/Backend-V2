@@ -77,4 +77,4 @@ export async function checkPremium() {
     }
   }
 }
-export const autoPrefix = '/premium';
+const autoPrefix = '/premium';

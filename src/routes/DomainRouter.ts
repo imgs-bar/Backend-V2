@@ -6,6 +6,7 @@ import {sendDomainLog} from '../util/LogUtil';
 import {deletev1Domain} from '../util/v1Util';
 import {Domain} from './../documents/Domain';
 import {EmbedBuilder} from './../util/Embed';
+
 export default async function DomainRouter(router: FastifyInstance) {
   router.get('/list', {preHandler: authHandler}, async (req, res) => {
     const domains = await Domain.find({}).select('domain _id');
@@ -44,4 +45,4 @@ export async function checkDomains() {
   }
 }
 
-export const autoPrefix = '/domains';
+const autoPrefix = '/domains';

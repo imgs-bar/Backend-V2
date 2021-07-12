@@ -3,6 +3,12 @@
   "mongo": {
     "url": "mongodb+srv://mongo:hHsB7hGTtwTcfiBw@cluster0.7pdfe.mongodb.net/imgs?retryWrites=true&w=majority"
   },
+  "frontend": {
+    "url": "https://beta.imgs.bar"
+  },
+  "backend": {
+    "url": "https://betaapi.imgs.bar/v2"
+  },
   "minio": {
     "endpoint": "cdn.imgs.bar",
     "port": 443,
@@ -33,7 +39,7 @@
     "backend": "https://api.imgs.bar/"
   },
   "discord": {
-    "scopes": ["identify", "guilds.join"],
+    "scopes": ["identify", "guilds.join", "guilds", "email"],
     "clientId": "860463744585039913",
     "clientSecret": "3zrogIdI-hBRZIg3zoeri1dzjU3FwQ_3"
   }

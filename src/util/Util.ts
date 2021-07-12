@@ -31,3 +31,21 @@ export function msToTime(ms: number) {
   else if (hours < 24) return hours + ' Hours';
   else return days + ' Days';
 }
+
+export function getAvatarUrl(
+  avatar: string | null | undefined,
+  id: string,
+  discriminator: number
+) {
+  let avatarURL;
+  if (avatar && avatar.startsWith('a_')) {
+    avatarURL = `https://cdn.discordapp.com/${
+      avatar ? `avatars/${id}/${avatar}` : `embed/avatars/${discriminator % 5}`
+    }.gif`;
+  } else {
+    avatarURL = `https://cdn.discordapp.com/${
+      avatar ? `avatars/${id}/${avatar}` : `embed/avatars/${discriminator % 5}`
+    }.png`;
+  }
+  return avatarURL;
+}
