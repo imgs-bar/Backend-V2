@@ -1,6 +1,6 @@
 import {FastifyInstance} from 'fastify';
 import {authHandler} from '../handlers/AuthHandler';
-import {cf, fetchAllZones} from '../util/Cloudflare';
+import {deleteZone, fetchAllZones} from '../util/Cloudflare';
 import colors from '../util/colors.json';
 import {sendDomainLog} from '../util/LogUtil';
 import {deletev1Domain} from '../util/v1Util';
@@ -35,8 +35,8 @@ export async function checkDomains() {
       try {
         sendDomainLog(embed);
 
+        await deleteZone(zone.id);
         await deletev1Domain(zone.name);
-        await cf.zones.del(zone.id);
       } catch (err) {
         console.error(err);
       }

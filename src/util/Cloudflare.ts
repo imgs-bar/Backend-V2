@@ -1,12 +1,7 @@
 /* eslint-disable node/no-unpublished-import */
 import axios, {Method} from 'axios';
-import Cloudflare, {Zones} from 'cloudflare';
 import config from '../config/config.json';
 import {Zone} from '@cloudflare/types';
-export const cf = new Cloudflare({
-  email: config.cloudflare.email,
-  key: config.cloudflare.apiKey,
-});
 
 async function request(
   endpoint: string,
@@ -57,4 +52,8 @@ export async function fetchAllZones(page = 1): Promise<Zone[]> {
   }
 
   return data.result;
+}
+
+export async function deleteZone(id: string) {
+  return await request(`/zones/${id}`, 'DELETE');
 }
