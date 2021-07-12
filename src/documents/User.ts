@@ -149,7 +149,7 @@ export interface User extends Document {
    */
   settings: {
     //If the user's upload URLS should be longer.
-    longUrl: boolean;
+    urlLength: number;
 
     //If the user's upload URLS should consist of emojis
     emojiUrl: boolean;
@@ -261,7 +261,7 @@ const UserSchema: Schema = new Schema({
   },
   private: {type: Boolean, default: false},
   settings: {
-    longUrl: {type: Boolean, default: false},
+    urlLength: {type: Number, default: 10},
     emojiUrl: {type: Boolean, default: true},
     showExtension: {type: Boolean, default: false},
     embeds: {

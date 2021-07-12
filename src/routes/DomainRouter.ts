@@ -14,6 +14,7 @@ import {deletev1Domain} from '../util/v1Util';
 import {Domain} from './../documents/Domain';
 import {EmbedBuilder} from './../util/Embed';
 import config from '../config/config.json';
+
 export const defaultDnsRecords = [
   {
     name: '*.{domain}',
@@ -39,7 +40,10 @@ export default async function DomainRouter(router: FastifyInstance) {
 export async function checkDomains() {
   const cfzones = await fetchAllZones();
   for (const zone of cfzones) {
-    if (config.ignoredDomains.includes(zone.name)) {
+    if (
+      config.ignoredDomains.includes(zone.name) ||
+      zone.name.endsWith('.ga')
+    ) {
       return;
     }
 
@@ -74,12 +78,12 @@ export async function checkDomains() {
       }
     } else {
       const domainData = await getRegistrarInfo(zone.name);
-      const domain = await Domain.findOne({id: zone.id});
+      let domain = await Domain.findOne({_id: zone.id});
 
       if (!domain) {
-        await Domain.create({
+        domain = await Domain.create({
           _id: zone.id,
-          name: zone.name,
+          domain: zone.name,
           nameservers: zone.name_servers,
           private: false,
           expiresAt: domainData.expires_at
@@ -88,17 +92,16 @@ export async function checkDomains() {
         });
 
         const dnsZones = await getDnsRecords(zone.id);
+        const mappedZones = dnsZones.map(z => {
+          return {
+            name: z.name.replace(z.zone_name!, '{domain}'),
+            type: z.type,
+            proxied: z.proxied,
+            content: z.content!.replace(z.zone_name!, '{domain}'),
+          };
+        });
 
-        if (
-          dnsZones.map(z => {
-            return {
-              name: z.name.replace(z.zone_name!, '{domain}'),
-              type: z.type,
-              proxied: z.proxied,
-              content: z.content!.replace(z.zone_name!, '{domain}'),
-            };
-          }) !== defaultDnsRecords
-        ) {
+        if (mappedZones.toString() !== defaultDnsRecords.toString()) {
           for (const zone of dnsZones) {
             await deleteDNSZone(zone.zone_id!, zone.id!);
           }
@@ -106,9 +109,9 @@ export async function checkDomains() {
           for (const dnsRecord of defaultDnsRecords) {
             await createDNSRecord(
               zone.id!,
-              dnsRecord.name.replace('{domain}', zone.name),
+              dnsRecord.name.replace('{domain}', zone.name).replace('.', ''),
               dnsRecord.content,
-              dnsRecord.type as 'CNAME',
+              'CNAME',
               dnsRecord.proxied
             );
           }
@@ -120,12 +123,17 @@ export async function checkDomains() {
               .setDescription(
                 `Zone ${zone.name} has been found, added it to database and updated DNS records`
               )
-              .addField('Zone ID', `\`\`\`${zone.id}\`\`\``, true)
-              .addField('Zone Name', `\`\`\`${zone.name}\`\`\``, true)
+              .addField('Zone ID', `\`\`\`${zone.id}\`\`\``, false)
+              .addField('Zone Name', `\`\`\`${zone.name}\`\`\``, false)
               .addField(
                 'Zone Created At',
                 `\`\`\`${Date.parse(zone.created_on).toLocaleString()}\`\`\``,
-                true
+                false
+              )
+              .addField(
+                'Domain Expires At',
+                `\`\`\`${domain.expiresAt.toLocaleString()}\`\`\``,
+                false
               )
           );
         } else {
@@ -136,12 +144,17 @@ export async function checkDomains() {
               .setDescription(
                 `Zone ${zone.name} has been found, added it to database, the dns records are correct so no need to update.`
               )
-              .addField('Zone ID', `\`\`\`${zone.id}\`\`\``, true)
-              .addField('Zone Name', `\`\`\`${zone.name}\`\`\``, true)
+              .addField('Zone ID', `\`\`\`${zone.id}\`\`\``, false)
+              .addField('Zone Name', `\`\`\`${zone.name}\`\`\``, false)
               .addField(
                 'Zone Created At',
                 `\`\`\`${zone.created_on}\`\`\``,
-                true
+                false
+              )
+              .addField(
+                'Domain Expires At',
+                `\`\`\`${domain.expiresAt.toLocaleString()}\`\`\``,
+                false
               )
           );
         }

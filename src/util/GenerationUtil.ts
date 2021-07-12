@@ -5,8 +5,8 @@ import emojis from './emojis.json';
 export function generateFileName(user: User, fileName: string) {
   return (
     (user.settings.emojiUrl
-      ? generateRandomEmojis(user.settings.longUrl ? 10 : 5)
-      : generateRandomString(user.settings.longUrl ? 10 : 5)) +
+      ? generateRandomEmojis(user.settings.urlLength)
+      : generateRandomString(user.settings.urlLength)) +
     (user.settings.showExtension ? extname(fileName) : '')
   );
 }

@@ -116,7 +116,7 @@ server.listen(PORT, '0.0.0.0', (err, address) => {
     .then(() => {
       console.log('Connected to MongoDB');
       (async () => {
-        sendStartup();
+        //sendStartup();
 
         checkPremium();
         setInterval(checkPremium, 10 * 60 * 1000);
