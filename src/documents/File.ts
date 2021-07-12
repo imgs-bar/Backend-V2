@@ -84,6 +84,7 @@ const FileSchema: Schema = new Schema({
   hash: String,
   uploader: String,
   size: Number,
+  cdnFileName: String,
   embed: {
     _id: String,
     enabled: Boolean,
