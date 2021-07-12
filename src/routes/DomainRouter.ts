@@ -110,7 +110,7 @@ export async function checkDomains() {
             await createDNSRecord(
               zone.id!,
               dnsRecord.name.replace('{domain}', '').replace('.', ''),
-              dnsRecord.content,
+              dnsRecord.content.replace('{domain}', zone.name),
               'CNAME',
               dnsRecord.proxied
             );
@@ -127,12 +127,16 @@ export async function checkDomains() {
               .addField('Zone Name', `\`\`\`${zone.name}\`\`\``, false)
               .addField(
                 'Zone Created At',
-                `\`\`\`${Date.parse(zone.created_on).toLocaleString()}\`\`\``,
+                `\`\`\`${zone.created_on}\`\`\``,
                 false
               )
               .addField(
                 'Domain Expires At',
-                `\`\`\`${domain.expiresAt.toLocaleString()}\`\`\``,
+                `\`\`\`${
+                  domain.expiresAt
+                    ? domain.expiresAt.toLocaleString()
+                    : 'Not supported.'
+                }\`\`\``,
                 false
               )
           );
@@ -153,7 +157,11 @@ export async function checkDomains() {
               )
               .addField(
                 'Domain Expires At',
-                `\`\`\`${domain.expiresAt.toLocaleString()}\`\`\``,
+                `\`\`\`${
+                  domain.expiresAt
+                    ? domain.expiresAt.toLocaleString()
+                    : 'Not supported.'
+                }\`\`\``,
                 false
               )
           );
