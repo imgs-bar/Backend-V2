@@ -56,6 +56,8 @@ export default async function DiscordRouter(router: FastifyInstance) {
           refreshToken: tokens.refresh_token,
         };
 
+        await user.save();
+
         await req.logIn(user);
 
         return res.redirect(`${config.frontend.url}/dashboard`);
@@ -109,6 +111,7 @@ export default async function DiscordRouter(router: FastifyInstance) {
           refreshToken: tokens.refresh_token,
         };
 
+        await user.save();
         return res.redirect(`${config.frontend.url}/dashboard`);
       } catch (err) {
         return res
