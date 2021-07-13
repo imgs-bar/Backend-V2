@@ -89,7 +89,12 @@ export default async function UploadRouter(router: FastifyInstance) {
         minio.putObject(config.minio.bucket, cdnFileName, request.file.buffer);
 
         return reply.send({
-          imageUrl: `https://beta.${domain.name}/${domain.fileNamePrefix}${file.fileName}`,
+          imageUrl: `https://beta.${
+            domain.name
+          }/${domain.fileNamePrefix.replace(
+            path.parse(domain.fileNamePrefix).base,
+            ''
+          )}${file.fileName}`,
           embed: file.embed,
         });
       } catch (error) {
