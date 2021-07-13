@@ -1,6 +1,7 @@
+import {EmbedInterface} from './../../typings/index.d';
 import {File} from '../documents/File';
 import {User} from '../documents/User';
-
+import _ from 'lodash';
 export function hasTimeExpired(time: number) {
   return time === -1 ? false : new Date().getTime() < time;
 }
@@ -62,50 +63,54 @@ export function getAvatarUrl(
  * @param {File} file the file
  * @return {*}  {*} the formatted embed
  */
-export function formatEmbed(embed: any, user: User, file: File): any {
-  for (const field of [
-    'header.text',
-    'header.url',
-    'author.text',
-    'author.url',
-    'title',
-    'description',
-  ]) {
-    if (embed[field]) {
-      embed[field] = embed[field]
-        .replace('{size}', file.size)
-        .replace('{username}', user.username)
-        .replace('{filename}', file.fileName)
-        .replace('{uploads}', user.uploads)
-        .replace('{date}', file.uploadedAt.toLocaleDateString())
-        .replace('{time}', file.uploadedAt.toLocaleTimeString())
-        .replace('{timestamp}', file.uploadedAt.toLocaleString());
+export function formatEmbed(
+  embed: EmbedInterface,
+  user: User,
+  file: File
+): any {
+  embed.header.text = replaceEmbedThings(embed.header.text, user, file);
+  embed.header.url = replaceEmbedThings(embed.header.url, user, file);
 
-      const TIMEZONE_REGEX = /{(time|timestamp):([^}]+)}/i;
-      let match = embed[field].match(TIMEZONE_REGEX);
+  embed.author.text = replaceEmbedThings(embed.author.text, user, file);
+  embed.author.url = replaceEmbedThings(embed.author.url, user, file);
 
-      while (match) {
-        try {
-          const formatted =
-            match[1] === 'time'
-              ? file.uploadedAt.toLocaleTimeString('en-US', {
-                  timeZone: match[2],
-                })
-              : file.uploadedAt.toLocaleString('en-US', {
-                  timeZone: match[2],
-                });
-
-          embed[field] = embed[field].replace(match[0], formatted);
-          match = embed[field].match(TIMEZONE_REGEX);
-        } catch (err) {
-          break;
-        }
-      }
-    }
-  }
+  embed.title = replaceEmbedThings(embed.title, user, file);
+  embed.description = replaceEmbedThings(embed.description, user, file);
 
   if (embed.color === 'random')
     embed.color = `#${(((1 << 24) * Math.random()) | 0).toString(16)}`;
 
   return embed;
+}
+
+function replaceEmbedThings(text: string, user: User, file: File): string {
+  let thing = text
+    .replace('{size}', formatBytes(file.size))
+    .replace('{username}', user.username)
+    .replace('{filename}', file.fileName)
+    .replace('{uploads}', '' + user.uploads)
+    .replace('{date}', file.uploadedAt.toLocaleDateString())
+    .replace('{time}', file.uploadedAt.toLocaleTimeString())
+    .replace('{timestamp}', file.uploadedAt.toLocaleString());
+
+  const TIMEZONE_REGEX = /{(time|timestamp):([^}]+)}/i;
+  let match = thing.match(TIMEZONE_REGEX);
+
+  while (match) {
+    try {
+      const formatted =
+        match[1] === 'time'
+          ? file.uploadedAt.toLocaleTimeString('en-US', {
+              timeZone: match[2],
+            })
+          : file.uploadedAt.toLocaleString('en-US', {
+              timeZone: match[2],
+            });
+
+      thing = thing.replace(match[0], formatted);
+      match = thing.match(TIMEZONE_REGEX);
+    } catch (err) {
+      break;
+    }
+  }
 }
