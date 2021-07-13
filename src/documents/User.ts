@@ -50,6 +50,11 @@ export interface User extends Document {
    * The users amount of invited people
    */
   invited: number;
+  
+  /**
+   * The users register date
+  */
+  registerDate: Date;
 
   /**
    * The users banned status
@@ -224,6 +229,7 @@ const UserSchema: Schema = new Schema({
   key: String,
   uploads: {type: Number, default: 0},
   invited: {type: Number, default: 0},
+  registerDate: {type: Date, default: null},
   discord: {
     linked: {type: Boolean, default: false},
     id: {type: String, default: null},
