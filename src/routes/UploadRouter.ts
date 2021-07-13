@@ -8,6 +8,7 @@ import {minio} from '../util/MinIO';
 import {generateFileName} from '../util/GenerationUtil';
 import {uploadHandler} from '../handlers/UploadHandler';
 import {v4 as uuid} from 'uuid';
+import path from 'path';
 export default async function UploadRouter(router: FastifyInstance) {
   const upload = multer({
     storage: multer.memoryStorage(),
@@ -53,7 +54,9 @@ export default async function UploadRouter(router: FastifyInstance) {
 
         const file = new File();
 
-        file.fileName = generateFileName(user, request.file.originalname);
+        file.fileName =
+          path.parse(domain.fileNamePrefix).base +
+          generateFileName(user, request.file.originalname);
         file.originalFileName = request.file.originalname;
 
         file.hash = hash;
@@ -66,13 +69,27 @@ export default async function UploadRouter(router: FastifyInstance) {
         file.mimeType = request.file.mimetype!;
 
         file.embed = {
-          ...user.settings.embeds.list.find(
+          ...(user.settings.embeds.list.find(
             e =>
               e._id ===
               domain.embeds[
                 Math.floor(Math.random() * user.settings.embeds.list.length)
               ]
-          )!,
+          ) || {
+            _id: 'default',
+            name: 'Default profile',
+            header: {
+              text: 'default',
+              url: '',
+            },
+            author: {
+              text: 'default',
+              url: '',
+            },
+            title: 'default',
+            description: 'default',
+            color: 'random',
+          }),
           enabled: user.settings.embeds.enabled,
         };
 
@@ -84,7 +101,7 @@ export default async function UploadRouter(router: FastifyInstance) {
         minio.putObject(config.minio.bucket, cdnFileName, request.file.buffer);
 
         return reply.send({
-          imageUrl: `https://beta.${domain.name}/${file.fileName}`,
+          imageUrl: `https://beta.${domain.name}/${domain.fileNamePrefix}${file.fileName}`,
         });
       } catch (error) {
         return reply.status(500).send({message: error.message});

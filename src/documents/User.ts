@@ -221,7 +221,13 @@ export interface User extends Document {
 const UserSchema: Schema = new Schema({
   _id: String,
   uid: Number,
-  originalUid: Number,
+  originalUid: {
+    type: Number,
+    default: function () {
+      const doc = this as any;
+      return doc.uid;
+    },
+  },
   email: String,
   username: String,
   password: String,
@@ -229,7 +235,7 @@ const UserSchema: Schema = new Schema({
   key: String,
   uploads: {type: Number, default: 0},
   invited: {type: Number, default: 0},
-  registerDate: {type: Date, default: new Date()},
+  registerDate: {type: Date, default: Date.now},
   discord: {
     linked: {type: Boolean, default: false},
     id: {type: String, default: null},
@@ -321,7 +327,7 @@ const UserSchema: Schema = new Schema({
       ],
       default: [
         {
-          name: 'imgs.bar',
+          name: 'aint.cool',
           subDomain: 'beta',
           fake: false,
           embeds: ['default'],
