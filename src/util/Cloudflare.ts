@@ -25,7 +25,7 @@ async function request(
 
     return data;
   } catch (err) {
-    throw new Error(err.response.data.errors[0].message);
+    throw new Error(err);
   }
 }
 
