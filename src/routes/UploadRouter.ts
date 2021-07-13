@@ -43,6 +43,8 @@ export default async function UploadRouter(router: FastifyInstance) {
           return reply.status(413).send({message: 'File is too big!'});
         }
 
+        const file = new File();
+
         const cdnFileName = uuid() + extname(request.file.originalname);
 
         const domain =
@@ -52,7 +54,14 @@ export default async function UploadRouter(router: FastifyInstance) {
         const sha1 = crypto.createHash('sha1');
         const hash = sha1.update(request.file.buffer).digest('hex');
 
-        const file = new File();
+        const embed =
+          user.settings.embeds.list.find(
+            e =>
+              e._id ===
+              domain.embeds[
+                Math.floor(Math.random() * user.settings.embeds.list.length)
+              ]
+          ) || file.embed;
 
         file.fileName =
           path.parse(domain.fileNamePrefix).base +
@@ -69,28 +78,8 @@ export default async function UploadRouter(router: FastifyInstance) {
         file.mimeType = request.file.mimetype!;
 
         file.embed = {
-          ...(user.settings.embeds.list.find(
-            e =>
-              e._id ===
-              domain.embeds[
-                Math.floor(Math.random() * user.settings.embeds.list.length)
-              ]
-          ) || {
-            _id: 'default',
-            name: 'Default profile',
-            header: {
-              text: 'default',
-              url: '',
-            },
-            author: {
-              text: 'default',
-              url: '',
-            },
-            title: 'default',
-            description: 'default',
-            color: 'random',
-          }),
-          enabled: user.settings.embeds.enabled ? true : false,
+          ...embed,
+          enabled: user.settings.embeds.enabled,
         };
 
         await file.save();

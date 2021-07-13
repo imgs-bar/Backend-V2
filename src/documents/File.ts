@@ -91,8 +91,8 @@ const FileSchema: Schema = new Schema({
   cdnFileName: String,
   mimeType: String,
   embed: {
+    enabled: {type: Boolean, default: true},
     _id: String,
-    enabled: Boolean,
     name: String,
     header: {
       text: String,
