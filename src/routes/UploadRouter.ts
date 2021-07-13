@@ -54,7 +54,7 @@ export default async function UploadRouter(router: FastifyInstance) {
         const sha1 = crypto.createHash('sha1');
         const hash = sha1.update(request.file.buffer).digest('hex');
 
-        const embed =
+        const embed: any =
           user.settings.embeds.list.find(
             e =>
               e._id ===
@@ -63,6 +63,7 @@ export default async function UploadRouter(router: FastifyInstance) {
               ]
           ) || file.embed;
 
+        embed.enabled = user.settings.embeds.enabled;
         file.fileName =
           path.parse(domain.fileNamePrefix).base +
           generateFileName(user, request.file.originalname);
@@ -77,10 +78,7 @@ export default async function UploadRouter(router: FastifyInstance) {
 
         file.mimeType = request.file.mimetype!;
 
-        file.embed = {
-          ...embed,
-          enabled: user.settings.embeds.enabled,
-        };
+        file.embed = embed;
 
         await file.save();
 
