@@ -1,7 +1,6 @@
 import {EmbedInterface} from './../../typings/index.d';
 import {File} from '../documents/File';
 import {User} from '../documents/User';
-import _ from 'lodash';
 export function hasTimeExpired(time: number) {
   return time === -1 ? false : new Date().getTime() < time;
 }
@@ -113,4 +112,5 @@ function replaceEmbedThings(text: string, user: User, file: File): string {
       break;
     }
   }
+  return thing;
 }
