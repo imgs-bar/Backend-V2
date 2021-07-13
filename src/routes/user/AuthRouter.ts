@@ -87,6 +87,7 @@ export default async function AuthRouter(router: FastifyInstance) {
       user.email = email.toLowerCase();
       user.username = username;
       user.password = await hash(password);
+      user.registerDate = new Date();
       user.key = `${username}_${generateRandomString(50)}`;
       await user.save();
 
