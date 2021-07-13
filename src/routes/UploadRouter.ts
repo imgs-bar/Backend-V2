@@ -44,6 +44,9 @@ export default async function UploadRouter(router: FastifyInstance) {
           return reply.status(413).send({message: 'File is too big!'});
         }
 
+        user.uploads += 1;
+        await user.save();
+
         const file = new File();
 
         const cdnFileName = uuid() + extname(request.file.originalname);
@@ -88,9 +91,6 @@ export default async function UploadRouter(router: FastifyInstance) {
         file.embed.enabled = user.settings.embeds.enabled;
 
         await file.save();
-
-        user.uploads += 1;
-        await user.save();
 
         minio.putObject(config.minio.bucket, cdnFileName, request.file.buffer);
 
