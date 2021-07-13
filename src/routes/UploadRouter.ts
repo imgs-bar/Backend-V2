@@ -69,18 +69,19 @@ export default async function UploadRouter(router: FastifyInstance) {
 
         file.mimeType = request.file.mimetype || 'application/octet-stream';
 
+        const embed = formatEmbed(
+          user.settings.embeds.list.find(
+            e =>
+              e._id ===
+              domain.embeds[
+                Math.floor(Math.random() * user.settings.embeds.list.length)
+              ]
+          ) || file.embed,
+          user,
+          file
+        );
         file.embed = {
-          ...formatEmbed(
-            user.settings.embeds.list.find(
-              e =>
-                e._id ===
-                domain.embeds[
-                  Math.floor(Math.random() * user.settings.embeds.list.length)
-                ]
-            ) || file.embed,
-            user,
-            file
-          ),
+          ...embed,
           enabled: true,
         };
 
