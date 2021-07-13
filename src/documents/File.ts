@@ -1,6 +1,6 @@
 import {Document, model, Model, Schema} from 'mongoose';
 
-interface File extends Document {
+export interface File extends Document {
   /**
    * Name of File
    */
@@ -36,6 +36,10 @@ interface File extends Document {
    * The file mimetype
    */
   mimeType: string;
+  /**
+   * When was the file uploaded
+   */
+  uploadedAt: Date;
   /**
    * The files embed settings
    */
@@ -90,6 +94,7 @@ const FileSchema: Schema = new Schema({
   size: Number,
   cdnFileName: String,
   mimeType: String,
+  uploadedAt: {type: Date, default: Date.now},
   embed: {
     enabled: {type: Boolean, required: true},
     _id: String,
