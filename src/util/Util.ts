@@ -63,10 +63,11 @@ export function getAvatarUrl(
  * @return {*}  {*} the formatted embed
  */
 export function formatEmbed(
-  embed: EmbedInterface,
+  fileEmbed: EmbedInterface,
   user: User,
   file: File
 ): any {
+  const embed = fileEmbed;
   embed.header.text = replaceEmbedThings(embed.header.text, user, file);
   embed.header.url = replaceEmbedThings(embed.header.url, user, file);
 
