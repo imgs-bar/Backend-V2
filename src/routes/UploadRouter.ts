@@ -90,7 +90,7 @@ export default async function UploadRouter(router: FastifyInstance) {
             description: 'default',
             color: 'random',
           }),
-          enabled: user.settings.embeds.enabled,
+          enabled: user.settings.embeds.enabled ? true : false,
         };
 
         await file.save();
