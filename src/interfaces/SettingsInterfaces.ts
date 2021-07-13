@@ -9,3 +9,15 @@ export interface settingsBodyInterface {
 export interface urlLengthBodyInterface {
   status: number;
 }
+
+export interface domainSettingBodyInterface {
+  name: string;
+  subDomain: string;
+  fake: boolean;
+  embeds: string[];
+  fileNamePrefix: string;
+}
+
+export interface domainRemoveInterface {
+  id: string;
+}

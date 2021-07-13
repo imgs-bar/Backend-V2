@@ -279,7 +279,7 @@ const UserSchema: Schema = new Schema({
               url: 'https://imgs.bar',
             },
             author: {
-              text: '{user}',
+              text: '{username}',
               url: '',
             },
             title: 'Image uploaded at imgs.bar',
