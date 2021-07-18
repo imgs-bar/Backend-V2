@@ -33,3 +33,4 @@ export interface EmbedInterface {
   //Embed color, set it to "random" for random
   color: string;
 }
+
