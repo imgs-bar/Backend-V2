@@ -40,6 +40,7 @@ server.register(fastifyCors, {
     'https://beta.imgs.bar',
     'https://frontend-v2-imgs-bar.vercel.app',
     'https://frontend-v2-six.vercel.app',
+    'https://frontend-v2-o6ldw2jsp-imgs-bar2.vercel.app',
   ],
   credentials: true,
 });
