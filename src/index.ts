@@ -39,6 +39,7 @@ server.register(fastifyCors, {
     'http://localhost:3000',
     'https://beta.imgs.bar',
     'https://frontend-v2-imgs-bar.vercel.app',
+    'https://frontend-v2-six.vercel.app',
   ],
   credentials: true,
 });
