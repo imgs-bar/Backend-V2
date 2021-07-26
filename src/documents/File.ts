@@ -23,9 +23,12 @@ export interface File extends Document {
   size: number;
 
   /**
-   * UUID of file uploader
+   * Info about file uploader
    */
-  uploader: string;
+  uploader: {
+    id: string;
+    name: string;
+  };
 
   /**
    * Filename stored on the cdn since it doesnt support emojis.
@@ -90,7 +93,10 @@ const FileSchema: Schema = new Schema({
   fileName: String,
   originalFileName: String,
   hash: String,
-  uploader: String,
+  uploader: {
+    id: String,
+    name: String,
+  },
   size: Number,
   cdnFileName: String,
   mimeType: String,

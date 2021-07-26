@@ -80,7 +80,7 @@ export default async function SettingsRouter(router: FastifyInstance) {
         'settings.urlLength': status,
       });
       return reply.send({
-        message: 'Updated longURL',
+        message: 'Updated url length.',
         settings: user?.settings,
       });
     }

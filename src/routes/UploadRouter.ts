@@ -68,7 +68,10 @@ export default async function UploadRouter(router: FastifyInstance) {
 
         file.cdnFileName = cdnFileName;
 
-        file.uploader = user._id;
+        file.uploader = {
+          id: user.id,
+          name: user.username,
+        };
 
         file.mimeType = request.file.mimetype || 'application/octet-stream';
 
@@ -93,7 +96,8 @@ export default async function UploadRouter(router: FastifyInstance) {
         const previousName = await File.findOne({fileName: file.fileName});
 
         if (previousName) {
-          await previousName.delete();
+          previousName.fileName = previousName.fileName + uuid();
+          await previousName.save();
         }
 
         minio.putObject(config.minio.bucket, cdnFileName, request.file.buffer);
