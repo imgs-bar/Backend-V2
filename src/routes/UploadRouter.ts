@@ -90,9 +90,15 @@ export default async function UploadRouter(router: FastifyInstance) {
 
         file.embed.enabled = user.settings.embeds.enabled;
 
-        await file.save();
+        const previousName = await File.findOne({fileName: file.fileName});
+
+        if (previousName) {
+          await previousName.delete();
+        }
 
         minio.putObject(config.minio.bucket, cdnFileName, request.file.buffer);
+
+        await file.save();
 
         return reply.send({
           imageUrl: `https://beta.${
