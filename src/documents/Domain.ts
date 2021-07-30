@@ -15,6 +15,11 @@ interface Domain extends Document {
   * amount of users using the domain
   */
   users: number
+  
+  /**
+  * domain addition date
+  */
+  dateAdded: Date;
 
   /**
    * The nameservers for the domain.
@@ -51,6 +56,7 @@ const DomainSchema: Schema = new Schema({
   _id: String,
   domain: String,
   users: Number,
+  dateAdded: {type: Date, default: new Date()},
   nameservers: [String],
   setup: {type: Boolean, default: false},
   private: Boolean,
