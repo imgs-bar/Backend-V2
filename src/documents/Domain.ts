@@ -10,6 +10,11 @@ interface Domain extends Document {
    * the domains name (imgs.bar)
    */
   domain: string;
+  
+  /**
+  * amount of users using the domain
+  */
+  users: number
 
   /**
    * The nameservers for the domain.
@@ -45,6 +50,7 @@ interface Domain extends Document {
 const DomainSchema: Schema = new Schema({
   _id: String,
   domain: String,
+  users: Number,
   nameservers: [String],
   setup: {type: Boolean, default: false},
   private: Boolean,
