@@ -84,7 +84,6 @@ export async function checkDomains() {
         domain = await Domain.create({
           _id: zone.id,
           domain: zone.name,
-          dateAdded: zone.created_on,
           nameservers: zone.name_servers,
           private: false,
           expiresAt: domainData.expires_at
