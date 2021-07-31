@@ -178,10 +178,10 @@ export interface User extends Document {
       name: string;
       
       //Amount of users using domain
-//       users: number
+      users: number
       
       //The domains addition date
-//       dateAdded: Date;
+      dateAdded: Date;
 
       //The domains subdomain, i.e beta. Not in use with fake url
       subDomain: string;
@@ -299,8 +299,8 @@ const UserSchema: Schema = new Schema({
       type: [
         {
           name: String,
-//           users: Number,
-//           dateAdded: {type: Date, default: Date.now},
+          users: Number,
+          dateAdded: {type: Date, default: Date.now},
           subDomain: String,
           fake: Boolean,
           embeds: [String],
