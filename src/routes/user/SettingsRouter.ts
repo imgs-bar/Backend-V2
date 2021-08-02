@@ -1,3 +1,4 @@
+import {urlTypeBodyInterface} from './../../interfaces/SettingsInterfaces';
 import {
   domainRemoveInterface,
   domainSettingBodyInterface,
@@ -35,7 +36,7 @@ export default async function SettingsRouter(router: FastifyInstance) {
           properties: {
             id: {
               type: 'string',
-              enum: ['emojiUrl', 'showExtension'],
+              enum: ['showExtension'],
             },
           },
         },
@@ -81,6 +82,33 @@ export default async function SettingsRouter(router: FastifyInstance) {
       });
       return reply.send({
         message: 'Updated url length.',
+        settings: user?.settings,
+      });
+    }
+  );
+
+  router.patch<{Body: urlTypeBodyInterface}>(
+    '/update/urlType',
+    {
+      schema: {
+        body: {
+          type: 'object',
+          required: ['type'],
+          properties: {
+            status: {type: 'string', enum: ['normal', 'emoji', 'invisible']},
+          },
+        },
+      },
+    },
+    async (request, reply) => {
+      const {user} = request;
+      const {type} = request.body;
+
+      await User.findByIdAndUpdate(user?._id, {
+        'settings.urlType': type,
+      });
+      return reply.send({
+        message: 'Updated url type.',
         settings: user?.settings,
       });
     }

@@ -2,12 +2,18 @@ import {User} from '../documents/User';
 import {extname} from 'path';
 import emojis from './emojis.json';
 
+/**
+ * Generate filename based on user and original filename
+ */
 export function generateFileName(user: User, fileName: string) {
   return (
-    (user.settings.emojiUrl
+    (user.settings.urlType === 'emoji'
       ? generateRandomEmojis(user.settings.urlLength)
-      : generateRandomString(user.settings.urlLength)) +
-    (user.settings.showExtension ? extname(fileName) : '')
+      : user.settings.urlType === 'normal'
+      ? generateRandomString(user.settings.urlLength)
+      : user.settings.urlType === 'invisible'
+      ? generateRandomEmojis(user.settings.urlLength)
+      : null) + (user.settings.showExtension ? extname(fileName) : '')
   );
 }
 
@@ -30,4 +36,21 @@ export function generateRandomEmojis(length: number) {
       randomEmojis + emojis[Math.floor(Math.random() * emojis.length)];
   }
   return randomEmojis;
+}
+
+export function generateInvisibleUrl(length: number) {
+  const invisChars = [
+    '\u200B',
+    '\u2060',
+    '\u200C',
+    '\u200D',
+    '\u17B5',
+    '\u1CBC',
+  ];
+
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += invisChars[Math.floor(Math.random() * invisChars.length)];
+  }
+  return result;
 }
