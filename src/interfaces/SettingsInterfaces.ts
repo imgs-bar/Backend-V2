@@ -25,3 +25,8 @@ export interface domainSettingBodyInterface {
 export interface domainRemoveInterface {
   id: string;
 }
+
+export interface betaDomainEditInterface {
+  domain: string;
+  fileNamePrefix: string;
+}

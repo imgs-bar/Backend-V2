@@ -1,4 +1,8 @@
-import {urlTypeBodyInterface} from './../../interfaces/SettingsInterfaces';
+import {Domain} from './../../documents/Domain';
+import {
+  urlTypeBodyInterface,
+  betaDomainEditInterface,
+} from './../../interfaces/SettingsInterfaces';
 import {
   domainRemoveInterface,
   domainSettingBodyInterface,
@@ -212,6 +216,44 @@ export default async function SettingsRouter(router: FastifyInstance) {
 
       return reply.send({
         message: 'Removed domain',
+        settings: user?.settings,
+      });
+    }
+  );
+
+  //TODO: recode this to support multiple embed profiles
+  //Really bad way of doing this, but we really wanted to change domains soo....
+  router.patch<{Body: betaDomainEditInterface}>(
+    '/beta/domain',
+    {
+      schema: {
+        body: {
+          type: 'object',
+          required: ['domain', 'fileNamePrefix'],
+          properties: {domain: {type: 'string', fileNamePrefix: 'string'}},
+        },
+      },
+    },
+    async (request, reply) => {
+      const {user} = request;
+      const {domain, fileNamePrefix} = request.body;
+
+      const domainCheck = await Domain.findOne({domain});
+      if (!domainCheck || !user) {
+        return reply.status(400).send({message: 'Domain not found'});
+      }
+
+      // This is why we only support one embed profile, so TODO
+      user.settings.domains[0] = {
+        ...user.settings.domains[0],
+        name: domain,
+        fileNamePrefix,
+      };
+
+      await user.save();
+
+      return reply.send({
+        message: 'Updated domain and shit',
         settings: user?.settings,
       });
     }
