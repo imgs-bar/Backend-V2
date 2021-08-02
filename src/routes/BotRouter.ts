@@ -32,7 +32,7 @@ export default function BotRouter(router: FastifyInstance, opts: any, done: any)
             user.uid = NewUID
             user.save()
     
-            res.status(200).send({ message: 'Updated UID successfully' })
+            res.send({ message: 'Updated UID successfully' })
             return;
         } catch (err) {
             res.status(500).send({ error: err.message })
