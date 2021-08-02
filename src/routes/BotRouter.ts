@@ -78,10 +78,10 @@ export default async function BotRouter(router: FastifyInstance) {
       const invites = [];
       for (let i = 0; i < amount; i++) {
         const invite = new Invite();
-        invite._id = await generateRandomString(40);
+        invite._id = generateRandomString(40);
         invite.createdBy = user._id;
         invite.expiresAt = expiresAt;
-        invite.save();
+        await invite.save();
 
         invites.push({
           link: `https://elixr.gifts/${invite._id}`,
