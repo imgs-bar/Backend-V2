@@ -246,6 +246,7 @@ export default async function SettingsRouter(router: FastifyInstance) {
       // This is why we only support one embed profile, so TODO
       user.settings.domains[0] = {
         ...user.settings.domains[0],
+        embeds: user.settings.domains[0].embeds,
         name: domain,
         fileNamePrefix,
       };
