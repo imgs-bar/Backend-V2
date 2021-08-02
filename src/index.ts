@@ -70,16 +70,6 @@ server.register(fastifyHelmet, {
   hidePoweredBy: true,
 });
 
-//Disable cache
-server.addHook('onRequest', async (req, reply) => {
-  reply.headers({
-    'Surrogate-Control': 'no-store',
-    'Cache-Control': 'no-store, max-age=0, must-revalidate',
-    Pragma: 'no-cache',
-    Expires: '0',
-  });
-});
-
 //Multer stuff
 server.register(multer);
 
@@ -116,17 +106,17 @@ server.listen(PORT, '0.0.0.0', (err, address) => {
     .then(() => {
       console.log('Connected to MongoDB');
       (async () => {
-        checkPremium();
+        await checkPremium();
         setInterval(checkPremium, 10 * 60 * 1000);
 
-        checkInvites();
+        await checkInvites();
         setInterval(checkInvites, 60 * 60 * 1000);
 
-        checkDomains();
+        await checkDomains();
         setInterval(checkDomains, 60 * 60 * 1000);
-      })();
 
-      checkBucket().then().catch();
+        await checkBucket().catch();
+      })();
     });
 });
 
