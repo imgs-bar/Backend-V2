@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import config from '../config/config.json';
 import { User } from '../documents/User';
-import { botInterface, changeUidInterface } from '../interfaces/BotInterfaces';
+import { botInterface, resolveUserInterface } from '../interfaces/BotInterfaces';
 
 export async function botHandler(
   request: FastifyRequest<{ Headers: botInterface }>,
@@ -19,7 +19,7 @@ export async function botHandler(
 }
 
 export async function ResolveUser(
-  request: FastifyRequest<{ Body: changeUidInterface }>,
+  request: FastifyRequest<{ Body: resolveUserInterface }>,
   reply: FastifyReply
 ) {
   try {
@@ -49,7 +49,7 @@ export async function ResolveUser(
     if (!IdentifiedUser) reply.status(403).send({ error: `Unknown User` })
     else if (IdentifiedUser?.banned.status) reply.status(403).send({ error: `You are banned with the reason: ${IdentifiedUser.banned.reason}` })
     else request.user = IdentifiedUser;
-    return;
+    return
   } catch (err) {
     reply.status(500).send({
       error: err.message
