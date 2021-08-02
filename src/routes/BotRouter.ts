@@ -4,16 +4,16 @@ import {
   changeUidInterface,
   botInterface,
 } from '../interfaces/BotInterfaces';
-import { botHandler, ResolveUser } from '../handlers/BotHandler';
-import { generateRandomString } from '../util/GenerationUtil';
-import { Invite } from '../documents/Invite';
-import { FastifyInstance } from 'fastify';
-import { User } from '../documents/User';
+import {botHandler, ResolveUser} from '../handlers/BotHandler';
+import {generateRandomString} from '../util/GenerationUtil';
+import {Invite} from '../documents/Invite';
+import {FastifyInstance} from 'fastify';
+import {User} from '../documents/User';
 
 export default async function BotRouter(router: FastifyInstance) {
   router.addHook('preHandler', botHandler);
 
-  router.post<{ Body: changeUidInterface; Headers: botInterface }>(
+  router.post<{Body: changeUidInterface; Headers: botInterface}>(
     '/changeuid',
     {
       preHandler: [ResolveUser],
@@ -51,7 +51,7 @@ export default async function BotRouter(router: FastifyInstance) {
     }
   );
 
-  router.post<{ Body: generateInviteInterface; Headers: botInterface }>(
+  router.post<{Body: generateInviteInterface; Headers: botInterface}>(
     '/generateInvite',
     {
       preHandler: [ResolveUser],
@@ -74,7 +74,7 @@ export default async function BotRouter(router: FastifyInstance) {
       if (!user)
         return res
           .status(500)
-          .send({ error: 'Well, that shouldnt have happened' });
+          .send({error: 'Well, that shouldnt have happened'});
 
       const invite = new Invite();
       invite._id = generateRandomString(40);
@@ -116,7 +116,7 @@ export default async function BotRouter(router: FastifyInstance) {
       if (!user)
         return res
           .status(500)
-          .send({ error: 'Well, that shouldnt have happened' });
+          .send({error: 'Well, that shouldnt have happened'});
 
       const invites = [];
       for (let i = 0; i < amount; i++) {
