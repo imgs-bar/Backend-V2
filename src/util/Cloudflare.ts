@@ -44,10 +44,11 @@ export async function fetchAllZones(page = 1): Promise<Zone[]> {
     {
       per_page: 50,
       page: page,
+      'account.id': config.cloudflare.accountId,
     }
   );
 
-  if (page < data.result_info.total_pages) {
+  if (page <= data.result_info.total_pages) {
     data.result = data.result.concat(await fetchAllZones(page + 1));
   }
 

@@ -1,7 +1,7 @@
 import {
   domainRemoveInterface,
   domainSettingBodyInterface,
-} from './../../interfaces/SettingsInterfaces';
+} from '../../interfaces/SettingsInterfaces';
 import {FastifyInstance} from 'fastify';
 import {authHandler} from '../../handlers/AuthHandler';
 import {
@@ -9,7 +9,7 @@ import {
   settingsParamsInterface,
   urlLengthBodyInterface,
 } from '../../interfaces/SettingsInterfaces';
-import {User} from './../../documents/User';
+import {User} from '../../documents/User';
 
 /**
  * Settings route for authenticated users

@@ -74,7 +74,7 @@ export default async function BotRouter(router: FastifyInstance) {
         return res
           .status(500)
           .send({error: 'Well, that shouldnt have happened'});
-
+      //a
       const invites = [];
       for (let i = 0; i < amount; i++) {
         const invite = new Invite();

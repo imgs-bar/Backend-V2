@@ -31,7 +31,9 @@ export const defaultDnsRecords = [
 ];
 export default async function DomainRouter(router: FastifyInstance) {
   router.get('/list', {preHandler: authHandler}, async (req, res) => {
-    const domains = await Domain.find({}).select('domain _id');
+    const domains = await Domain.find({setup: true}).select(
+      'domain _id setup approved'
+    );
 
     return res.send({domains});
   });
@@ -56,20 +58,11 @@ export async function checkDomains() {
         )
         .addField('Zone ID', `\`\`\`${zone.id}\`\`\``, true)
         .addField('Zone Status', `\`\`\`${zone.status}\`\`\``, true)
-        .addField(
-          'NameServers',
-          `\`\`\`${zone.original_name_servers[0]} --> ${zone.name_servers[0]} \n ${zone.original_name_servers[1]} --> ${zone.name_servers[1]}\`\`\``,
-          true
-        )
         .addField('Registrar', `\`\`\`${zone.original_registrar}\`\`\``, true)
-        .addField(
-          'Zone Created At',
-          `\`\`\`${Date.parse(zone.created_on).toLocaleString()}\`\`\``,
-          true
-        );
+        .addField('Zone Created At', `\`\`\`${zone.created_on}\`\`\``, true);
 
       try {
-        sendDomainLog(embed);
+        await sendDomainLog(embed);
 
         await deleteZone(zone.id);
         await deletev1Domain(zone.name);
@@ -133,9 +126,7 @@ export async function checkDomains() {
               .addField(
                 'Domain Expires At',
                 `\`\`\`${
-                  domain.expiresAt
-                    ? domain.expiresAt.toLocaleString()
-                    : 'Not supported.'
+                  domain.expiresAt ? domain.expiresAt : 'Not supported.'
                 }\`\`\``,
                 false
               )
@@ -158,9 +149,7 @@ export async function checkDomains() {
               .addField(
                 'Domain Expires At',
                 `\`\`\`${
-                  domain.expiresAt
-                    ? domain.expiresAt.toLocaleString()
-                    : 'Not supported.'
+                  domain.expiresAt ? domain.expiresAt : 'Not supported.'
                 }\`\`\``,
                 false
               )
