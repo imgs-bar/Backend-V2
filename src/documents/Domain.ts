@@ -40,6 +40,11 @@ interface Domain extends Document {
    * When does the domain expire?
    */
   expiresAt: Date;
+
+  /**
+   * When was the domain created?
+   */
+  createdAt: Date;
 }
 
 const DomainSchema: Schema = new Schema({
@@ -51,6 +56,7 @@ const DomainSchema: Schema = new Schema({
   approved: {type: Boolean, default: false},
   usableBy: {type: [String], default: []},
   expiresAt: Date,
+  createdAt: {type: Date, default: Date.now},
 });
 
 export const Domain: Model<Domain> = model('Domain', DomainSchema);

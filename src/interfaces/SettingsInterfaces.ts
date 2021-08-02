@@ -10,6 +10,10 @@ export interface urlLengthBodyInterface {
   status: number;
 }
 
+export interface urlTypeBodyInterface {
+  type: string;
+}
+
 export interface domainSettingBodyInterface {
   name: string;
   subDomain: string;
