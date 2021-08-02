@@ -15,6 +15,7 @@ import {checkPremium} from './routes/PremiumRouter';
 import {checkBucket} from './util/MinIO';
 import {setupPassport} from './util/SetupPassport';
 import path = require('path');
+import {checkFiles} from './routes/UploadRouter';
 
 const PORT = config.port || 8080;
 
@@ -114,6 +115,9 @@ server.listen(PORT, '0.0.0.0', (err, address) => {
 
         await checkDomains();
         setInterval(checkDomains, 60 * 60 * 1000);
+
+        await checkFiles();
+        setInterval(checkFiles, 60 * 60 * 1000);
 
         await checkBucket().catch();
       })();

@@ -39,10 +39,16 @@ export interface File extends Document {
    * The file mimetype
    */
   mimeType: string;
+
   /**
    * When was the file uploaded
    */
   uploadedAt: Date;
+
+  /**
+   * If the file is deleted from the cdn
+   */
+  deleted: boolean;
   /**
    * The files embed settings
    */
@@ -101,6 +107,7 @@ const FileSchema: Schema = new Schema({
   cdnFileName: String,
   mimeType: String,
   uploadedAt: {type: Date, default: Date.now},
+  deleted: {type: Boolean, default: false},
   embed: {
     enabled: {type: Boolean, required: true},
     _id: String,

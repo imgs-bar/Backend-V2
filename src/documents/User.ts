@@ -157,8 +157,8 @@ export interface User extends Document {
     //Length of users uploads
     urlLength: number;
 
-    //If the user's upload URLS should consist of emojis
-    emojiUrl: boolean;
+    //The type of url the user has set
+    urlType: 'normal' | 'emoji' | 'invisible';
 
     //If the user's upload URLS should show the file extension
     showExtension: boolean;
@@ -248,7 +248,7 @@ const UserSchema: Schema = new Schema({
   private: {type: Boolean, default: false},
   settings: {
     urlLength: {type: Number, default: 10},
-    emojiUrl: {type: Boolean, default: true},
+    urlType: {type: String, default: 'emoji'},
     showExtension: {type: Boolean, default: false},
     embeds: {
       enabled: {type: Boolean, default: true},
