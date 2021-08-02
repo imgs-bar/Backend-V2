@@ -1,15 +1,18 @@
-import { changeUidInterface, botInterface, generateInviteInterface } from "../interfaces/BotInterfaces";
-import { botHandler, ResolveUser } from "../handlers/BotHandler";
-import { generateRandomString } from '../util/GenerationUtil';
-import { Invite as InviteClass } from '../documents/Invite';
-import { FastifyInstance } from "fastify";
-import { User } from "../documents/User";
-
+import {
+  changeUidInterface,
+  botInterface,
+  generateInviteInterface,
+} from '../interfaces/BotInterfaces';
+import {botHandler, ResolveUser} from '../handlers/BotHandler';
+import {generateRandomString} from '../util/GenerationUtil';
+import {Invite} from '../documents/Invite';
+import {FastifyInstance} from 'fastify';
+import {User} from '../documents/User';
 
 export default async function BotRouter(router: FastifyInstance) {
-  router.addHook('preHandler', botHandler)
+  router.addHook('preHandler', botHandler);
 
-  router.post<{ Body: changeUidInterface, Headers: botInterface }>(
+  router.post<{Body: changeUidInterface; Headers: botInterface}>(
     '/changeuid',
     {
       preHandler: [ResolveUser],
@@ -18,32 +21,36 @@ export default async function BotRouter(router: FastifyInstance) {
           type: 'object',
           required: ['uid', 'user'],
           properties: {
-            uid: { type: 'integer', maximum: 0 },
-            user: { type: 'string' }
+            uid: {type: 'integer'},
+            user: {type: 'string'},
           },
         },
       },
-    }, async (req, res) => {
+    },
+    async (req, res) => {
       try {
-        const { user } = req
-        if (!user) return res.status(500).send({ error: 'Well, that shouldnt have happened' });
+        const {user} = req;
+        const {uid} = req.body;
+        if (!user)
+          return res
+            .status(400)
+            .send({message: 'Well, that shouldnt have happened'});
 
-        const NewUID = req.body.uid
+        const uidTaken = await User.findOne({uid});
+        if (uidTaken)
+          return res.status(400).send({message: 'UID already in use'});
 
-        const UIDTakenCheck = await User.findOne({ uid: NewUID });
-        if (UIDTakenCheck) return res.status(400).send({ message: 'UID already in use' });
+        user.uid = uid;
+        await user.save();
 
-        user.uid = NewUID;
-        user.save();
-
-        return res.send({ message: 'Updated UID successfully' });
+        return res.send({message: 'Updated UID successfully'});
       } catch (err) {
-        return res.status(500).send({ error: err.message });
+        return res.status(400).send({message: err.message});
       }
     }
-  )
+  );
 
-  router.post<{ Body: generateInviteInterface, Headers: botInterface }>(
+  router.post<{Body: generateInviteInterface; Headers: botInterface}>(
     '/generateInvites',
     {
       preHandler: [ResolveUser],
@@ -52,34 +59,41 @@ export default async function BotRouter(router: FastifyInstance) {
           type: 'object',
           required: ['amount', 'user'],
           properties: {
-            amount: { type: 'integer', maximum: 10, minimum: 1 },
-            user: { type: 'string' },
-            expiresAt: { type: 'number' }
+            amount: {type: 'integer', maximum: 10, minimum: 1},
+            user: {type: 'string'},
+            expiresAt: {type: 'number'},
           },
         },
       },
-    }, async (req, res) => {
-      const { user } = req
-      const Invites: { link: string, code: string }[] = [];
+    },
+    async (req, res) => {
+      const {user} = req;
+      const {expiresAt, amount} = req.body;
 
-      if (!user) return res.status(500).send({ error: 'Well, that shouldnt have happened' });
+      if (!user)
+        return res
+          .status(500)
+          .send({error: 'Well, that shouldnt have happened'});
 
-      if (new Date(req.body?.expiresAt) < new Date(Date.now())) 
-        return res.status(400).send({ error: 'ExpiresAt time is set before the current date' })
-      
+      const invites = [];
+      for (let i = 0; i < amount; i++) {
+        const invite = new Invite();
+        invite._id = await generateRandomString(40);
+        invite.createdBy = user._id;
+        invite.expiresAt = expiresAt;
+        invite.save();
 
-      for (let i = 0; i < req.body.amount; i++) {
-        const Invite = new InviteClass()
-        Invite._id = await generateRandomString(40);
-        Invite.createdBy = user._id;
-        Invite.expiresAt = new Date(req.body?.expiresAt).getTime() || -1
-        Invite.save()
-
-        Invites.push({ link: `https://elixr.gifts/${Invite._id}`, code: Invite._id })
+        invites.push({
+          link: `https://elixr.gifts/${invite._id}`,
+          code: invite._id,
+        });
       }
 
-      return res.send({ message: `Successfully generated ${Invites.length} invites`, Invites })
+      return res.send({
+        message: `Successfully generated ${amount} invites`,
+        invites,
+      });
     }
-  )
+  );
 }
 export const autoPrefix = '/bot';
