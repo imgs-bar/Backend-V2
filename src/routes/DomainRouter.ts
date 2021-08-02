@@ -31,9 +31,7 @@ export const defaultDnsRecords = [
 ];
 export default async function DomainRouter(router: FastifyInstance) {
   router.get('/list', {preHandler: authHandler}, async (req, res) => {
-    const domains = await Domain.find({setup: true}).select(
-      'domain _id setup approved'
-    );
+    const domains = await Domain.find().select('domain _id setup approved');
 
     return res.send({domains});
   });

@@ -3,9 +3,16 @@ export interface changeUidInterface {
   user: string;
 }
 
+export interface generateInvitesInterface {
+  amount: number;
+  user: string;
+  expiresAt: number;
+}
+
 export interface generateInviteInterface {
   amount: number;
   user: string;
+  uses: number;
   expiresAt: number;
 }
 

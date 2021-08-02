@@ -77,6 +77,13 @@ export default async function SettingsRouter(router: FastifyInstance) {
       const {user} = request;
       const {status} = request.body;
 
+      //We have to do this
+      if (!status) {
+        await User.findByIdAndUpdate(user?._id, {
+          'settings.urlLength': 0,
+        });
+      }
+
       await User.findByIdAndUpdate(user?._id, {
         'settings.urlLength': status,
       });
