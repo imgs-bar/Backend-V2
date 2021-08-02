@@ -3,7 +3,7 @@ import {FastifyInstance} from 'fastify';
 import {authHandler} from '../../handlers/AuthHandler';
 import {botHandler} from '../../handlers/BotHandler';
 import {getFromRedis, setInRedis} from '../../util/RedisUtil';
-import {botInterface} from './../../handlers/BotHandler';
+import {botInterface} from './../../interfaces/BotInterfaces';
 import {setMotdInterface} from './../../interfaces/InformationInterfaces';
 
 const filter = new Filter();
