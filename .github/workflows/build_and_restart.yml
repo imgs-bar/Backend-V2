@@ -1,0 +1,17 @@
+name: Build new docker image and restart container
+
+on:
+  push:
+    branches: ['master']
+
+jobs:
+  build-and-update-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: run build script on vps
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          script: ./imgs-v2/Backend-V2/buildDocker.sh
