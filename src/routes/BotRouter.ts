@@ -64,9 +64,9 @@ export default async function BotRouter(router: FastifyInstance) {
 
       if (!user) return res.status(500).send({ error: 'Well, that shouldnt have happened' });
 
-      if (new Date(req.body?.expiresAt) < new Date(Date.now())) {
+      if (new Date(req.body?.expiresAt) < new Date(Date.now())) 
         return res.status(400).send({ error: 'ExpiresAt time is set before the current date' })
-      }
+      
 
       for (let i = 0; i < req.body.amount; i++) {
         const Invite = new InviteClass()
