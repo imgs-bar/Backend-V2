@@ -12,7 +12,7 @@ export function generateFileName(user: User, fileName: string) {
       : user.settings.urlType === 'normal'
       ? generateRandomString(user.settings.urlLength)
       : user.settings.urlType === 'invisible'
-      ? generateRandomEmojis(user.settings.urlLength)
+      ? generateInvisibleUrl(user.settings.urlLength)
       : null) + (user.settings.showExtension ? extname(fileName) : '')
   );
 }
