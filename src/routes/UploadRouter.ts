@@ -9,7 +9,7 @@ import {generateFileName} from '../util/GenerationUtil';
 import {uploadHandler} from '../handlers/UploadHandler';
 import {v4 as uuid} from 'uuid';
 import path from 'path';
-import {formatEmbed} from '../util/Util';
+import {addMonth, formatEmbed} from '../util/Util';
 export default async function UploadRouter(router: FastifyInstance) {
   const upload = multer({
     storage: multer.memoryStorage(),
@@ -118,5 +118,17 @@ export default async function UploadRouter(router: FastifyInstance) {
       }
     }
   );
+}
+
+export async function checkFiles() {
+  const files = await File.find({
+    uploadedAt: {$gte: addMonth(new Date())},
+  });
+
+  for (const file of files) {
+    await minio.removeObject(config.minio.bucket, file.cdnFileName);
+    file.deleted = true;
+    await file.save();
+  }
 }
 export const autoPrefix = '/upload';

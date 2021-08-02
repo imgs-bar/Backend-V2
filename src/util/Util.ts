@@ -115,3 +115,8 @@ function replaceEmbedThings(text: string, user: User, file: File): string {
   }
   return thing;
 }
+
+export function addMonth(date: Date) {
+  date.setMonth(date.getMonth() + 1);
+  return date;
+}
