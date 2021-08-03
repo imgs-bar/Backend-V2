@@ -1,6 +1,6 @@
 import {Document, model, Model, Schema} from 'mongoose';
 
-interface Domain extends Document {
+interface Paste extends Document {
   /**
    * The Unique ID of the paste
    */
@@ -12,14 +12,14 @@ interface Domain extends Document {
   content: string;
 
   /**
-   * If the paste should be removed once viewed
-   */
-  deleteOnView: boolean;
-
-  /**
    * Hashed password to access the paste
    */
   password: string;
+
+  /**
+   * If the paste should be removed once viewed
+   */
+  deleteOnView: boolean;
 
   /**
    * UUID of the paste creator
@@ -40,11 +40,11 @@ interface Domain extends Document {
 const PasteSchema: Schema = new Schema({
   _id: String,
   content: String,
-  deleteOnView: {type: Boolean, default: false},
   password: String,
+  deleteOnView: {type: Boolean, default: false},
   createdBy: String,
   expiresAt: Date,
   createdAt: {type: Date, default: Date.now},
 });
 
-export const Domain: Model<Domain> = model('Paste', PasteSchema);
+export const Paste: Model<Paste> = model('Paste', PasteSchema);
