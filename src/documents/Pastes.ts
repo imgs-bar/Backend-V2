@@ -27,6 +27,11 @@ interface Paste extends Document {
   createdBy: string;
 
   /**
+   * The paste's deletion key
+   */
+  deletionKey: string;
+
+  /**
    * Unix time when the pastes automatically gets deleted.
    */
   expiresAt: number;
@@ -44,6 +49,7 @@ const PasteSchema: Schema = new Schema({
   deleteOnView: {type: Boolean, default: false},
   createdBy: String,
   expiresAt: Date,
+  deletionKey: String,
   createdAt: {type: Date, default: Date.now},
 });
 
