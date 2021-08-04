@@ -1,6 +1,6 @@
 import {Document, model, Model, Schema} from 'mongoose';
 
-interface Paste extends Document {
+export interface Paste extends Document {
   /**
    * The Unique ID of the paste
    */
@@ -14,7 +14,7 @@ interface Paste extends Document {
   /**
    * Hashed password to access the paste
    */
-  password: string;
+  password: string | null;
 
   /**
    * If the paste should be removed once viewed
@@ -40,6 +40,11 @@ interface Paste extends Document {
    * Date when the paste was created.
    */
   createdAt: Date;
+
+  /**
+   * If the paste is viewable or not
+   */
+  disabled: boolean
 }
 
 const PasteSchema: Schema = new Schema({
@@ -50,6 +55,7 @@ const PasteSchema: Schema = new Schema({
   createdBy: String,
   expiresAt: Date,
   deletionKey: String,
+  disabled: {type: Boolean, default: false},
   createdAt: {type: Date, default: Date.now},
 });
 
