@@ -16,5 +16,3 @@ EXPOSE 8080
 HEALTHCHECK CMD curl --fail http://localhost:8080/v2/health || exit 1
 
 CMD [ "yarn", "start" ]
-
-
