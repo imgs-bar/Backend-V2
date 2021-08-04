@@ -22,7 +22,13 @@ export default async function AuthRouter(router: FastifyInstance) {
     if (!user)
       return reply.status(500).send({message: "This shouldn't happen"});
 
-    const fileInfo = [];
+    const fileInfo: {
+      link: string;
+      cdnLink: string;
+      uploadedAt: Date;
+      fileSize: number;
+      originalFileName: string;
+    }[] = [];
 
     const files = await File.find({'uploader.id': user._id});
 
