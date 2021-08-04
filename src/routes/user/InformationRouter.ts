@@ -37,7 +37,7 @@ export default async function AuthRouter(router: FastifyInstance) {
       });
     });
 
-    return reply.send({files});
+    return reply.send({files: fileInfo});
   });
 
   router.patch<{Body: setMotdInterface; Headers: botInterface}>(
