@@ -29,10 +29,10 @@ export default async function PastesRouter(router: FastifyInstance) {
     },
     async (request, reply) => {
       const {content, deleteOnView, expiresAt, password} = request.body;
-      // const {user} = request;
+      const {user} = request;
 
-      // if (!user)
-      //   return reply.status(500).send({message: "This shouldn't happen"});
+      if (!user)
+        return reply.status(500).send({message: "This shouldn't happen"});
 
       const paste = new Paste();
       paste._id = generateRandomString(18);
@@ -43,7 +43,7 @@ export default async function PastesRouter(router: FastifyInstance) {
       paste.expiresAt = expiresAt || -1;
       paste.deletionKey = generateRandomString(24);
       paste.createdAt = new Date();
-      paste.createdBy = '97fafc73-5961-593f-af69-630eaeba4265';
+      paste.createdBy = user._id;
 
       await paste.save();
 
@@ -80,4 +80,4 @@ export default async function PastesRouter(router: FastifyInstance) {
   );
 }
 
-export const autoPrefix = '/pastes';
+export const autoPrefix = '/paste';

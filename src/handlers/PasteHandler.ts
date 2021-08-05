@@ -18,7 +18,12 @@ export async function pasteHandler(
     $or: [{_id: id}, {deletionKey: id}],
   });
 
-  if (!RequestedPaste || RequestedPaste.disabled)
+  if (
+    !RequestedPaste ||
+    RequestedPaste.disabled ||
+    (RequestedPaste.expiresAt !== -1 &&
+      new Date(RequestedPaste.expiresAt).getTime() < Date.now())
+  )
     return reply.status(400).send({message: 'Unknown Paste.'});
 
   if (RequestedPaste.password && !password)
@@ -26,7 +31,10 @@ export async function pasteHandler(
       .status(401)
       .send({message: 'Provide the password for the paste.'});
 
-  if (RequestedPaste.password && !await verify(RequestedPaste.password, password)) {
+  if (
+    RequestedPaste.password &&
+    !(await verify(RequestedPaste.password, password))
+  ) {
     return reply.status(401).send({message: 'Incorrect Password.'});
   }
 
