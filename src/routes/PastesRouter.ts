@@ -13,7 +13,7 @@ export default async function PastesRouter(router: FastifyInstance) {
   router.post<{Body: createPastesInterface}>(
     '/create',
     {
-      // preHandler: authHandler,
+      preHandler: authHandler,
       schema: {
         body: {
           type: 'object',
