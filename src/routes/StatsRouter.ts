@@ -10,6 +10,7 @@ export default async function StatsRouter(router: FastifyInstance) {
     let users = parseInt(await Cache.get('cache.users'));
     let files = parseInt(await Cache.get('cache.files'));
     let domains = parseInt(await Cache.get('cache.domains'));
+    let pastes = parseInt(await Cache.get('cache.pastes'));
 
     if (!users) {
       users = await User.estimatedDocumentCount().exec();
