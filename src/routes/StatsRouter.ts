@@ -23,7 +23,12 @@ export default async function StatsRouter(router: FastifyInstance) {
       domains = await Domain.estimatedDocumentCount().exec();
       await Cache.set('cache.domains', domains);
     }
+    if (!pastes) {
+      domains = await Paste.estimatedDocumentCount().exec();
+      await Cache.set('cache.pastes', pastes);
+    }
     return reply.send({
+      pastes,
       domains,
       users,
       files,
