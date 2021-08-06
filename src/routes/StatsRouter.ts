@@ -1,4 +1,5 @@
 import {Domain} from './../documents/Domain';
+import {Pastes} from './../documents/Pastes';
 import {FastifyInstance} from 'fastify';
 import {File} from '../documents/File';
 import {User} from '../documents/User';
