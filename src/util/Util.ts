@@ -92,6 +92,7 @@ function replaceEmbedThings(text: string, user: User, file: File): string {
     .replace('{date}', file.uploadedAt.toLocaleDateString())
     .replace('{time}', file.uploadedAt.toLocaleTimeString())
     .replace('{timestamp}', file.uploadedAt.toLocaleString());
+    .replace('{profile}', user.settings.domains[0].embeds.[0]; // i think
 
   const TIMEZONE_REGEX = /{(time|timestamp):([^}]+)}/i;
   let match = thing.match(TIMEZONE_REGEX);
