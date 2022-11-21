@@ -8,7 +8,7 @@
     "axios": "^0.21.1",
     "bad-words": "^3.0.4",
     "discord-oauth2": "^2.7.0",
-    "fastify": "^3.16.1",
+    "fastify": "^3.29.4",
     "fastify-autoload": "^3.7.1",
     "fastify-cors": "^6.0.1",
     "fastify-helmet": "^5.3.1",
