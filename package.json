@@ -18,7 +18,7 @@
     "fastify-secure-session": "^2.3.1",
     "ioredis": "^4.27.6",
     "minio": "^7.0.18",
-    "mongoose": "^5.12.11",
+    "mongoose": "^5.13.15",
     "passport-local": "^1.0.0",
     "systeminformation": "^5.7.7",
     "typescript": "^4.2.4",
